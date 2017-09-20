@@ -1,0 +1,85 @@
+<body id="login-page-full">
+<div id="login-full-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        <div id="login-box">
+          <div id="login-box-holder">
+            <div class="row">
+              <div class="col-xs-12">
+                <header id="login-header">
+                  <div id="login-logo">
+                    <img src="img/navBarIcons/vaca.svg" alt=""/>
+                    <h5>TECNOLAC - CONTROL</h5>
+                  </div>
+                </header>
+                <div id="login-box-inner">
+                  <form role="form" name="loginForm" novalidate="novalidate" ng-submit="login()">
+                    <!--// User name -->
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                      <input class="form-control"
+                             type="text"
+                             name="userId"
+                             placeholder="{{'userManagement.user.username'| translate }}"
+                             ng-model="credentials.userId"
+                             ng-minlength="5"
+                             ng-maxlength='50'
+                             ng-trim="false"
+                             autocomplete="off"
+                             ng-change="credentials.userId = credentials.userId .split(' ').join('')"
+                             lowercase
+                             required>
+                    </div>
+                    <span class="help-block alert-warning" ng-show="loginForm.userId.$error.maxlength">{{'userManagement.user.username.validation.maxlenght'| translate }}</span>
+                    <!--// Password -->
+                    <div class="input-group">
+                      <span class="input-group-addon"><i class="fa fa-key"></i></span>
+                      <input type="password"
+                             class="form-control"
+                             name="password"
+                             placeholder="{{'userManagement.user.password'| translate }}"
+                             ng-model="credentials.password"
+                             ng-minlength="6"
+                             ng-maxlength='50'
+                             required>
+                    </div>
+                    <span class="help-block alert-warning" ng-show="loginForm.password.$error.maxlength">{{'userManagement.user.password.validation.maxlenght'| translate }}</span>
+
+                    <div id="remember-me-wrapper">
+                      <div class="row">
+                        <a href="#/forgot-password" id="login-forget-link" class="col-xs-12">
+                          {{'forgot.your.password'| translate }}</a>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-xs-12">
+                        <span ng-show="loginError" style="color: crimson; font-size: 12px;">{{'password.error' | translate}}</span>
+                        <span ng-show="connexionError" style="color: #ff0000; font-size: 12px;">{{'connexion.error' | translate}}</span>
+                      </div>
+                      <div class="col-xs-12" title="{{'login'|translate}}">
+                        <button type="submit" class="btn btn-default col-xs-12">{{'login'| translate }}
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="login-box-footer">
+            <div class="row">
+              <div class="col-xs-12" title="{{'login.btn.login'|translate}}">
+                ¿{{'do.not.have.an.account'|translate}}?
+                <a href="#" data-toggle="modal" title="{{'register.now' | translate}}" data-target="#newAccount">
+                  {{'register.now' | translate}}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<div ng-include="'common/dialogs/account-management-dialog.html'"></div>

@@ -1,0 +1,119 @@
+<!--//.Create user form -->
+<div class="col-md-5">
+  <!--//.Full name input-->
+  <div class="form-group" ng-class="{ 'has-warning' : userForm.fullName.$invalid && !userForm.fullName.$pristine }">
+    <input type="text" name="fullName" class="form-control" ng-model="user.name" placeholder="{{'full.name'|translate}}"
+           ng-minlength="4" ng-maxlength="30" required>
+    <p ng-show="userForm.fullName.$invalid && !userForm.fullName.$pristine" class="help-block">El nombre completo es
+      requerido y debe ser mayor a 4 dígitos</p>
+  </div>
+
+  <!--//.Email input-->
+  <div class="form-group" ng-class="{ 'has-error' : userForm.email.$invalid && !userForm.email.$pristine }">
+    <input type="email" id="email" name="email" class="form-control" ng-required="" ng-model="user.email"
+           ng-keypress="blockSpace($event)"
+           ng-pattern="/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+()*$/"
+           ng-change="user.email = user.email.split(' ').join('')" placeholder="{{'email'|translate}}"
+           ng-maxlength="70">
+    <p ng-show="userForm.email.$invalid && !userForm.email.$pristine" class="help-block">{{'enter.email.valid'
+      |translate}}.</p>
+  </div>
+
+  <!--//.Username input-->
+  <div class="form-group" ng-class="{ 'has-warning' : userForm.username.$invalid && !userForm.username.$pristine }">
+    <input type="text" name="username" class="form-control" ng-model="user.username" ng-keypress="blockSpace($event)"
+           ng-change="credentials.userId = credentials.userId .split(' ').join('')" ng-trim="false" id="username"
+           autocomplete="off" placeholder="{{'userManagement.user.username'|translate}}"
+           ng-disabled="user.accountAdmin || user.systemAdmin" ng-minlength="4" ng-maxlength='50' lowercase required>
+    <p ng-show="userForm.username.$invalid && !userForm.username.$pristine" class="help-block">El nombre de usuario debe
+      ser mayor a 4 dígitos</p>
+  </div>
+
+  <!--//.Password input-->
+  <div ng-if="!user.id" class="form-group"
+       ng-class="{ 'has-warning' : userForm.password.$invalid && !userForm.password.$pristine }">
+    <input type="password" name="password" class="form-control" ng-model="user.password" id="password"
+           autocomplete="off" placeholder="{{'userManagement.new.user.passwordNew'|translate}}" ng-minlength='6'
+           ng-maxlength='20' required>
+    <p ng-show="userForm.password.$invalid && !userForm.password.$pristine" class="help-block">La contraseña debe ser
+      mayor a 6 dígitos y menor a 20</p>
+  </div>
+
+  <!--//.Password confirm input-->
+  <div ng-if="!user.id" class="form-group" ng-class="{ 'has-warning' : userForm.passwordConfirm.$error.noMatch}">
+    <input type="password" name="passwordConfirm" class="form-control" ng-model="user.passwordConfirm"
+           id="passwordConfirm" autocomplete="off" placeholder="{{'userManagement.new.user.passwordConfirm'|translate}}"
+           pw-check="user.password" required>
+    <span class="help-block " ng-show="userForm.passwordConfirm.$error.noMatch">La contraseña no coincide </span>
+  </div>
+
+  <!--//.Role select-->
+  <div class="form-group">
+    <select id="roleId" class="form-control" ng-model="user.roleId" ng-disabled="user.accountAdmin || user.systemAdmin"
+            ng-options="group.id as group.name for group in groups" required>
+    </select>
+  </div>
+</div>
+
+<!--//.Assign devices div-->
+<div class="col-md-7 assign-container-margin ">
+  <div class="form-group">
+    <div class="col-xs-6"><i class="fa fa-eye-slash"></i> <span class="user-list-title">{{'no.visible.devices.to.user' | translate}}</span>
+      <div class="listContainer">
+        <ul>
+                <span class="cursor-pointer" ng-repeat="deviceId in listOfUnViewsByUserId[user.id]">
+                    <li class="no-type-list" ng-click="addToView(user.id, deviceId)">
+                        <div id="userListContainer">
+                            <i class="fa {{devicesNameById[deviceId][1]}} i-list-margin"
+                               style="color:#{{devicesNameById[deviceId][2]}};"></i>
+                            <span class="list-user-font"> {{devicesNameById[deviceId][0]}}</span>
+                        </div>
+                    </li>
+                </span>
+        </ul>
+      </div>
+    </div>
+
+
+    <div class="col-xs-6"><i class="fa fa-eye"></i> <span class="user-list-title">{{'visible.devices.to.user' | translate}}</span>
+      <div class="listContainer list-padding">
+        <ul>
+                    <span class="cursor-pointer" ng-repeat="deviceId in listOfViewsByUserId[user.id]">
+                        <li class="no-type-list" ng-click="addToUnView(user.id, deviceId)">
+                            <div id="secondUserListContainer">
+                                <span class="list-user-font"> {{devicesNameById[deviceId][0]}}</span>
+                                <i class="fa {{devicesNameById[deviceId][1]}} i-list-margin"
+                                   style="color:#{{devicesNameById[deviceId][2]}};"></i>
+                            </div>
+                        </li>
+                    </span>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="userManagementBtnContainer">
+    <!--//.Delete button-->
+    <button title="{{'lbl.delete' | translate }}" data-toggle="modal" data-target="#modalDeleteUser"
+            class="btn btn-danger btn-sm" type="button" ng-click="prepareEditUser(user)" ng-hide="user.accountAdmin">
+      <i class="fa fa-trash-o fa-lg"></i>
+    </button>
+
+    <!--//.Change password button-->
+    <button title="{{'lbl.changePassword' | translate }}" type="button" class="btn btn-warning btn-sm"
+            data-toggle="modal" ng-hide="!user.id" data-target="#modalAdminChangePassword"
+            ng-click="prepareEditUser(user)">
+      <i class="fa fa-key fa-lg"></i>
+    </button>
+
+    <!--&lt;!&ndash;//.Revert changes button&ndash;&gt;-->
+    <!--<button title="{{'control.fence.undo' | translate}}" class="btn btn-default btn-sm" ng-hide="isNewUser" ng-click="undoCurrentUser(user)" >-->
+    <!--<i class="fa fa-share fa-lg"></i>-->
+    <!--</button>-->
+
+    <!--//.Save button-->
+    <button title="Guardar" class="btn btn-success btn-sm" type="submit">
+      <i class="fa fa-save fa-lg"></i>
+    </button>
+    <br style="clear:both"/>
+  </div>
+</div>

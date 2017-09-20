@@ -1,0 +1,77 @@
+<div class="row">
+  <!-- Select option Companies -->
+
+  <div class="col-lg-6 col-sm-6 form-group">
+    <label><b>Cuenta: </b></label>
+    <select class="form-control"
+            ng-model="subscription.account"
+            name="select-company"
+            required
+            ng-options="account as account.nameAccount for account in accounts"
+            ng-change="getDevicesByAccount(subscription.account)">
+      <option value="" disabled selected>{{ 'subscription.select.account' | translate }}...</option>
+    </select>
+  </div>
+  <!-- Select option Devices -->
+  <div class="col-lg-6 col-sm-6 form-group">
+    <label><b>Dispositivo: </b></label>
+    <select class="form-control"
+            ng-model="subscription.device"
+            name="select-deviceCompany"
+            required
+            ng-options="e as e.name for e in devices">
+      <option value="" disabled selected>{{ 'subscription.select.device' | translate }}...</option>
+    </select>
+  </div>
+</div>
+
+<!-- begin plan service -->
+<div class="row">
+  <div class="col-lg-6 col-sm-6 form-group">
+    <label><b>Plan: </b></label>
+    <select class="form-control"
+            ng-model="subscription.servicePlanId"
+            name="select-service-plan"
+            ng-required="true"
+            ng-change="adjustDates(subscription.servicePlanId)"
+            ng-options="sp.id as sp.description for sp in servicePlanList">
+      <option value="" disabled selected>{{ 'subscription.select.plan' | translate }}...</option>
+    </select>
+  </div>
+  <!-- Input Max SMS-->
+  <div class="form-group col-lg-6 col-sm-6">
+    <label for="inputMaxSms"><b>{{'max.sms' | translate}}</b></label>
+    <input name="address"
+           ng-model="subscription.maxSms"
+           type="number"
+           class="form-control"
+           id="inputMaxSms"
+           placeholder="{{'max.sms' | translate }}">
+  </div>
+</div> <!-- end plan service -->
+
+<!--Date picker (start and end Date)-->
+<div class="row">
+  <!-- Start Date -->
+  <div class="col-lg-6 col-sm-6 form-group">
+    <label for="startDate"><b>{{'startSubscription' | translate}}</b></label>
+    <div class="input-group">
+      <span for="startDate" class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      <date-picker id="startDate" ng-model="subscription.startDate" ng-change="setFormatStartDate()"></date-picker>
+    </div>
+  </div>
+  <!-- End Date -->
+  <div class="col-lg-6 col-sm-6 form-group">
+    <label for="endDate"><b>{{'finishSubscription' | translate}}</b></label>
+    <div class="input-group" id="">
+      <span for="endDate" class="input-group-addon"><i class="fa fa-calendar"></i></span>
+      <date-picker id="endDate" ng-model="subscription.endDate" ng-change="setLastDayOfMonth()"></date-picker>
+    </div>
+  </div>
+  <span class="alert-warning" ng-show="isValidForm">{{'subscription.alert.date.message'|translate}}</span>
+</div>
+
+
+
+
+

@@ -1,0 +1,248 @@
+<div class="row">
+  <div class="alert alert-warning"
+       ng-if="devices.length==0"
+       style="margin-bottom: 0px; text-align: center">
+    <i class="fa fa-warning fa-fw fa-lg"></i>
+    <strong>{{'current.position.info.head'|translate}}</strong>{{'current.position.info.noDevices'|translate }}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="main-box-body clearfix">
+      <ng-form name="deviceConfigForm" id="deviceConfigForm">
+        <div class="panel-group accordion" id="accordion">
+          <div class="panel panel-default" ng-repeat="device in devices">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle collapsed" data-toggle="collapse"
+                   data-parent="#accordion" href="\#collapse-{{device.id}}">
+                  <i id='iconLogo-{{device.id}}' class="{{device.icon}} fa fa-1x"
+                     style="color:#{{device.color}};"></i>
+                  <label id="label-{{device.id}}">{{device.name}}</label>
+                </a>
+              </h4>
+            </div>
+            <div id="collapse-{{device.id}}" class="panel-collapse collapse">
+              <div class="panel-body">
+                <div class="col-lg-10">
+                  <form name="deviceForm" id="deviceForm-{{device.id}}" role="form">
+                    <div class="row">
+                      <div class="main-box" style="position:relative;">
+
+                        <div style="position:absolute; bottom:5px; right:10px;"
+                             class="show-hide">
+                          <a style=" display: inline; margin-left:10px;"
+                             title="{{'control.fence.undo' | translate}}"
+                             ng-click="undoCurrentDevice(device)"
+                             id="reload-{{device.id}}"
+                             class='reload-{{device.id}} reloadDevice'>
+                            <i class="fa fa-share fa-2x"></i>
+                          </a>
+                          <a style=" display: inline; margin-left:10px;"
+                             title="{{'lbl.save' | translate }}"
+                             ng-click="updateDevice(device, deviceForm)">
+                            <i class="fa fa-save fa-2x"></i>
+                          </a>
+                        </div>
+
+                        <header class="main-box-header clearfix" style="float:left">
+                          <h2>{{'device.config.personalization.title'|translate}}</h2>
+                        </header>
+                        <br style="clear:both;"/>
+
+                        <div class="main-box-body clearfix"
+                             style="display:block; margin-top:0px">
+                          <div class="row">
+                            <!-- imei -->
+                            <div class="form-group col-md-6">
+                              <label>
+                                {{'configDevice.device.imei'|translate}}
+                              </label>
+
+                              <div class="form-control">{{device.imei}}</div>
+                            </div>
+                          </div>
+
+                          <div class="row" style="overflow-x: inherit;">
+                            <!-- name -->
+                            <div class="form-group col-md-6">
+                              <label for="name-{{device.id}}">
+                                {{'configDevice.device.namePlaceholder'|translate}}
+                              </label>
+                              <input type="text" class="form-control"
+                                     id="name-{{device.id}}"
+                                     placeholder="{{'configDevice.device.namePlaceholder'|translate}}"
+                                     ng-model="device.name"
+                                     value="{{device.name}}"/>
+                            </div>
+
+                            <!-- color -->
+                            <div class="form-group col-md-3 col-xs-6">
+                              <label for="color-{{device.id}}">
+                                {{'device.config.color.title'|translate}}
+                              </label>
+                              <input type="text"
+                                     id="color-{{device.id}}"
+                                     name="border-color"
+                                     class="pick-a-color form-control"
+                                     color="device.color"
+                                     ng-model="device.color"
+                                     title="{{'device.config.color.title'|translate}}"
+                                     pick-color="{showSavedColors: false, showAdvanced: false, showHexInput: false, inlineDropdown: true}"/>
+                            </div>
+
+                            <!-- icon -->
+                            <div class="form-group col-md-3 col-xs-6">
+                              <label for="icon-{{device.id}}">
+                                {{'device.config.icon.title'|translate}}
+                              </label><br/>
+                              <button id="icon-{{device.id}}"
+                                      class="iconPicker btn btn-default "
+                                      title="{{'device.config.icon.title'|translate}}"
+                                      icon-picker="{iconset: 'fontawesome', icon: '{{device.icon}}', search: false}">
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <!-- ALERT SOS -->
+                      <div class="main-box col-md-12" ng-show="device.sos">
+                        <header class="main-box-header clearfix">
+                          <h2>{{'device.config.alert.sos.title'|translate}}</h2>
+                        </header>
+                        <div class="main-box-body clearfix">
+                          <div class="form-group col-md-6">
+                            <label for="emailAlerts-{{device.id}}">
+                              {{ 'alert.to.emails' | translate}}
+                            </label>
+                            <textarea id="emailAlerts-{{device.id}}"
+                                      name="alertEmails"
+                                      ng-model="device.sosMails"
+                                      ng-pattern="/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+([,.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+)*$/"
+                                      ng-keypress="blockSpace($event)"
+                                      class="form-control"
+                                      placeholder="{{'emails.example'| translate }}"
+                                      rows="2">
+                                                        </textarea>
+
+
+                            <span class="help-block alert alert-warning"
+                                  ng-show="deviceForm.alertEmails.$error.pattern">
+                                                            <i class="fa fa-warning fa-fw fa-lg"></i>
+                                                            <strong>{{'control.msg.valid.mail'|translate}}</strong>
+                                                        </span>
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label for="smsAlerts-{{device.id}}">
+                              {{ 'alert.to.cellphones' | translate}}
+                            </label>
+                            <textarea
+                                 id="smsAlerts-{{device.id}}"
+                                 name="alertPhoneNumbers"
+                                 ng-disabled="currentUser.companyTest"
+                                 ng-model="device.sosCellphones"
+                                 ng-pattern="/^(\d{8})+([,.](\d{8}))*$/"
+                                 placeholder="{{'phones.example'| translate }}"
+                                 class="form-control"
+                                 rows="2">
+                                                        </textarea>
+
+                            <span class="help-block alert alert-warning"
+                                  ng-show="deviceForm.alertPhoneNumbers.$error.pattern">
+                                                        <i class="fa fa-warning fa-fw fa-lg"></i>
+                                                        {{'control.message.valid.national.numbers'|translate}}
+                                                          <br>
+                                                          {{'control.msg.valid.phone.number.coma'|translate}}
+                                                    </span>
+                            <span class="help-block alert alert-warning"
+                                  ng-show="currentUser.companyTest">
+                                                            <i class="fa fa-warning fa-fw fa-lg"></i>
+                                                            <strong>{{'lbl.warning'| translate }}</strong> {{'lbl.user.test.smsNotAllowed'| translate }}
+                                                        </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- ALERT BATTERY-->
+                      <div class="main-box col-md-12" ng-show="device.battery">
+                        <header class="main-box-header clearfix">
+                          <h2>{{'device.config.alert.battery.title'|translate}}</h2>
+                        </header>
+                        <div class="main-box-body clearfix">
+                          <div class="form-group col-md-6">
+                            <label for="batteryMails-{{device.id}}">
+                              {{ 'alert.to.emails' | translate}}
+                            </label>
+                            <textarea id="batteryMails-{{device.id}}"
+                                      name="batteryEmails"
+                                      ng-model="device.batteryMails"
+                                      class="form-control"
+                                      ng-pattern="/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+([,.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$/"
+                                      placeholder="{{'emails.example'| translate }}"
+                                      rows="2">
+                                                    </textarea>
+                            <span class="help-block alert alert-warning"
+                                  ng-show="deviceForm.batteryEmails.$error.pattern">
+                                                            <i class="fa fa-warning fa-fw fa-lg"></i>
+                                                            <strong>{{'control.msg.valid.mail'|translate}}</strong>
+                                                        </span>
+                          </div>
+                          <div class="form-group col-md-6">
+                            <label for="batteryCellphones-{{device.id}}">
+                              {{ 'alert.to.cellphones' | translate}}
+                            </label>
+                            <textarea id="batteryCellphones-{{device.id}}"
+                                      name="batteryPhoneNumbers"
+                                      ng-disabled="currentUser.companyTest"
+                                      ng-model="device.batteryCellphones"
+                                      placeholder="{{'phones.example'| translate }}"
+                                      ng-pattern="/^(\d{8})+([,.](\d{8}))*$/"
+                                      class="form-control"
+                                      rows="2">
+                                                    </textarea>
+
+                            <span class="help-block alert alert-warning"
+                                  ng-show="deviceForm.batteryPhoneNumbers.$error.pattern">
+                                                        <i class="fa fa-warning fa-fw fa-lg"></i>
+                                                        {{'control.message.valid.national.numbers'|translate}}
+                                                          <br>
+                                                          {{'control.msg.valid.phone.number.coma'|translate}}
+                                                    </span>
+                            <span class="help-block alert alert-warning"
+                                  ng-show="currentUser.companyTest">
+                                                        <i class="fa fa-warning fa-fw fa-lg"></i>
+                                                        <strong>{{'lbl.warning'| translate }}</strong> {{'lbl.user.test.smsNotAllowed'| translate }}
+                                                    </span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br/>
+
+                    <div style="position:absolute; bottom:-5px; right:10px;" class="hide-show">
+                      <a style=" display: inline; margin-left:10px;"
+                         title="{{'control.fence.undo' | translate}}"
+                         ng-click="undoCurrentDevice(device)"
+                         id="reload-{{device.id}}" class='reload-{{device.id}} reloadDevice'>
+                        <i class="fa fa-share fa-2x"></i>
+                      </a>
+                      <a style=" display: inline; margin-left:10px;"
+                         title="{{'lbl.save' | translate }}"
+                         ng-click="updateDevice(device, deviceForm)">
+                        <i class="fa fa-save fa-2x"></i>
+                      </a>
+                    </div>
+                  </form>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-form>
+    </div>
+  </div>
+</div>

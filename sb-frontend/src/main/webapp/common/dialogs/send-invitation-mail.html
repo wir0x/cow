@@ -1,0 +1,51 @@
+<!--New Account Modal-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="send-email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="closeDeleteAlertas()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">
+                    Notificar el usuario {{subscription.name}} por mail
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <form style="margin-top: 20px" role="form" name="formMail">
+
+                    <div>
+                        <input style="text-align: center;"
+                               type="email"
+                               name="email1"
+                               ng-pattern="/^[_a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/"
+                               placeholder="email"
+                               class="form-control"
+                               id="email"
+                               ng-model="subscription.email"
+                               ng-keypress="blockSpace($event)"
+                               required
+                                />
+                    </div>
+                </form>
+            </div>
+
+                <div class="modal-footer">
+                    <button title="{{'lbl.close' | translate}}"
+                            type="button"
+                            class="btn btn-sm btn-default"
+                            ng-click="closeDeleteAlertas()"
+                            data-dismiss="modal">
+                        {{'lbl.close' | translate}}
+                    </button>
+
+                    <button title="{{'lbl.save' | translate}}"
+                            type="button"
+                            ng-class=" {'pendingButton' : !(formMail.email1.$valid && formMail.email1.$dirty && !formMail.email1.$error.required)}"
+                            class="btn btn-sm btn-primary"
+                            ng-click="updateMail()">
+                        Mandar el mail
+                    </button>
+
+                </div>
+        </div>
+    </div>
+</div>

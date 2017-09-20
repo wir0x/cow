@@ -1,0 +1,75 @@
+<style type="text/css">
+  /* Set a size for our map container, the Google Map will take up 100% of this container */
+  .map-content {
+    width: 100%;
+    height: 300px;
+  }
+</style>
+
+<!-- Google maps -->
+<div class="row">
+  <div class="main-box clearfix">
+    <div class="col-xs-6 responsive-block" style="padding: 40px">
+      <h3 class="pull-left" style="width: 100%"><span>{{'contact.location.title'|translate }}</span></h3>
+      <div style="clear: both;"></div>
+      <div id="invoice-companies" class="row">
+        <div class="invoice-icon hidden-sm"><i class="fa fa-home"></i></div>
+        <div class="invoice-company">
+          <h4>SwissBytes Ltda.</h4>
+          <p>Calle 8 - Buen Retiro #120, Av. Roca y Coronado,<br>Santa Cruz de la Sierra, Bolivia. <br>Tel: (+591) 3 357
+            5050</p>
+        </div>
+        <div id="map-canvas" class="map-content"></div>
+      </div>
+    </div>
+
+    <div class="col-xs-6 responsive-block-sub" style="padding: 40px">
+      <h3 class="pull-left" style="width: 100%"><span>{{'contact.title'|translate}}</span></h3>
+      <div style="clear: both;"></div>
+      </br>
+      <form role="form" name="contactForm">
+        <div class="form-group">
+          <label for="email">{{'userManagement.user.email'|translate}} <span style="color: red;">*</span> :</label>
+          <input type="email" id="email"
+                 ng-model="contact.from"
+                 class="form-control"
+                 ng-required="true"
+                 placeholder="{{'contact.text.mail'|translate}}">
+        </div>
+
+        <div class="form-group">
+          <label for="message-title">{{'contact.title.title'|translate}} <span style="color: red;">*</span> :</label>
+          <input type="text" name="title" id="message-title"
+                 ng-model="contact.title"
+                 class="form-control"
+                 required
+                 ng-minlength="2"
+                 placeholder="{{'contact.subject.message'|translate}}">
+        </div>
+
+        <div class="form-group  ">
+          <label for="message">{{'lbl.message'|translate}} <span style="color: red;">*</span> :</label>
+          <textarea
+               class="form-control" name="message" id="message"
+               ng-model="contact.message"
+               rows="3"
+               required
+               ng-minlength="5"
+               placeholder="{{'contact.text.message'|translate}}">
+                    </textarea>
+        </div>
+
+        <div class="form-group ">
+          <button
+               title="{{'forgotPassword.btn.sendMail'| translate }}"
+               id="btnSend"
+               class="btn btn-success col-xs-12"
+               ng-click="contact.sendMessage()"
+               ng-disabled="contactForm.$invalid">
+            {{'forgotPassword.btn.sendMail'| translate }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

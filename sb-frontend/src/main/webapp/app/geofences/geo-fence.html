@@ -1,0 +1,123 @@
+<div class="row">
+  <!-- Begin google maps -->
+  <div class="col-lg-8">
+    <div class="main-box clearfix">
+      <header class="main-box-header clearfix">
+        <h2>{{ 'control.fence' | translate }}</h2>
+      </header>
+      <div class="main-box-body clearfix">
+        <div class="wrapper-map">
+          <div id="map_canvas">
+            <div id="map-canvas" class="angular-google-map-container"></div>
+          </div>
+          <div id="over_map">
+            <div class="loader"><i class=" fa fa-spinner fa-spin fa-2x"></i></div>
+          </div>
+          <br style="clear:both"/>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End google maps -->
+
+  <div class="col-lg-4">
+    <!-- Begin select option device-->
+    <div class="row">
+      <div class="form-group">
+        <label>{{ 'userManagement.user.devices' | translate }}</label>
+        <select class="form-control"
+                ng-model="fence.deviceId"
+                ng-change="findFencesByDeviceId(fence.deviceId)"
+                ng-options="device.id as device.name for device in devices">
+          <option value="" disabled selected>{{ 'userManagement.user.devices' | translate }}</option>
+        </select>
+      </div>
+    </div>
+    <!-- End select option device-->
+
+    <!-- Begin button create new fence-->
+    <div class="row"
+         title="{{'control.fence.addNew' | translate }}">
+      <a ng-click="prepareNewFence(controlForm)"
+         class="btn btn-primary btn-lg pull-right">
+        <i class="fa fa-plus-circle fa-lg"></i>
+        {{'control.fence.addNew' | translate }}
+      </a>
+    </div>
+    <!-- End button create new fence-->
+    <br>
+    <!-- Begin accordion -->
+    <div class="row">
+      <div class="main-box-body clearfix">
+        <ng-form name="controlForm">
+          <div class="panel-group accordion" id="accordion">
+            <div class="panel panel-default" ng-repeat="fence in fences">
+              <div class="panel-heading">
+                <h4 class="panel-title" ng-click="loadPolygon(fence, fenceForm)">
+                  <a id="collapse-header-{{fence.id}}"
+                     ng-class="{'accordion-toggle':true, 'collapsed':fence.id != undefined || !$last}"
+                     data-toggle="collapse"
+                     data-parent="#accordion" href="#collapse-{{fence.id}}">
+                    <div class="ctrlSpanLeft">
+                      {{fence.name}}
+                      <div class="gradientOnTop"></div>
+                    </div>
+                    <div class="ctrlSpanRight">
+                                            <span class="badge badge-warning pull-right"
+                                                  ng-show="!fence.id || fenceForm.$dirty">
+                                                <i class="fa fa-warning"></i>
+                                            </span>
+                      <span class="badge badge-success pull-right" ng-show="fence.status">
+                                                {{'lbl.enabled' | translate }}
+                                            </span>
+                      <span class="badge badge-danger pull-right" ng-hide="fence.status">
+                                                {{'lbl.disabled' | translate }}
+                                            </span>
+                    </div>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse-{{fence.id}}"
+                   ng-class="{'panel-collapse':true, 'collapse': true, 'in':fence.id == undefined && $last}">
+                <div class="panel-body">
+                  <form id="fenceForm-{{fence.id}}" role="form" name="fenceForm" class="my-form"
+                        novalidate>
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <div ng-include="'app/geofences/form/geo-fence-form.html'"></div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-form>
+      </div>
+    </div>
+    <!-- End accordion -->
+  </div>
+</div>
+
+<div ng-include="'common/dialogs/control-dialog.html'"></div>
+<div ng-show="!account.hasDevice" ng-include="'common/instructions/control.html'"></div>
+<script>
+  $(window).ready(function () {
+    // Optimisation: Store the references outside the event handler:
+    var $window = $(window);
+
+    function checkHeight() {
+      var windowHsize = $window.height();
+      var windowsize = $window.width();
+      if (windowsize >= 1185) {
+        $(".wrapper-map").css("height", windowHsize - 180);
+      }
+    }
+
+    // Execute on load
+    checkHeight();
+
+    // Bind event listener
+    $(window).resize(checkHeight);
+  });
+</script>

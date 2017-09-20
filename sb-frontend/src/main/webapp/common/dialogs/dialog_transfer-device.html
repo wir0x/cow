@@ -1,0 +1,30 @@
+<!-- Transfer device to another account-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="modal_transfer_device" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form name="form_transfer_device" class="form">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="closeDeleteAlertas()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Transferir dispositivo</h4>
+            </div>
+
+            <div class="modal-body">
+                <p>¿Desea traspasar este dispositivo con todos sus datos (Subscripción, Geocerca…) a otra cuenta de administrador?</p>
+                <label>Ingrese el correo electrónico de la cuenta a la que quiere traspasar.</label>
+                <div class="form-group" ng-class="{ 'has-warning' : form_transfer_device.email.$invalid && !form_transfer_device.email.$pristine }">
+                    <input type="email" id="email" name="email" class="form-control" ng-required="" ng-model="emailNewAccount" ng-keypress="blockSpace($event)" ng-pattern="/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+()*$/"
+                           ng-change="emailNewAccount = emailNewAccount.split(' ').join('')" placeholder="{{'email'|translate}}" ng-maxlength="70">
+                    <p ng-show="form_transfer_device.email.$invalid && !form_transfer_device.email.$pristine" class="help-block">{{'enter.email.valid' |translate}}.</p>
+                </div>
+                <div class="has-warning">
+                    <span class="help-block">Si solo desea compartir el dispositivo sin deshacerse de el porfavor diríjase al menú <a href="#/user-management"><i class="fa fa-users"></i> Usuarios</a> </span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button title="{{'lbl.close' | translate}}" type="button" class="btn btn-sm btn-default" ng-click="closeDeleteAlertas()" data-dismiss="modal">{{'lbl.close' | translate}}</button>
+                <button title="{{'lbl.save' | translate}}" type="submit" class="btn btn-sm btn-success" ng-click="sendToTransferDevice(emailNewAccount)" data-dismiss="modal">Enviar</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>

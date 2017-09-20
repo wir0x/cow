@@ -1,0 +1,365 @@
+<div class="row">
+  <div class="jumbotron center" id="subscriptions-management-container">
+    <div class="main-box-body clearfix ">
+
+      <div class="search-container" ng-show="!emptySubscriptionList">
+        <div class="filter-block pull-right " style="margin-bottom: -55px;">
+          <div class="form-group searchText">
+            <input style="border-radius: 20px" type="text" ng-model="searchText"
+                   class="form-control "/>
+            <i style="margin-top: -2px; margin-right: 8px;"
+               class="fa fa-search search-icon"></i>
+          </div>
+        </div>
+      </div>
+
+
+      <!--Begin PENDING devices subscription -->
+      <div ng-show="subscriptionsPending.length != 0 " class="center-subscriptions-list-container">
+        <div class="table-margin">
+
+          <table id="table-report-devices-pendientes" style="cursor: pointer" class="table table-hover">
+            <caption>
+              <div ng-show="pendingTableOpenClose && showMaxPendingTable" class="input-group pull-right maxPageDiv"
+                   style="width: 65px; margin-bottom: -35px; margin-top: 10px;">
+                <span class="input-group-addon btn-link-special-input">{{'report.functions.maxPerPageAddOn' | translate}}</span>
+                <input type="number" class="form-control" id="maxPerPendingPage" ng-model="numPerPendingPage"
+                       style="width: 65px"/>
+              </div>
+            </caption>
+
+            <thead>
+            <tr class="pendingTable">
+              <th style=" cursor: pointer; width: 20px;" ng-click="showHidePendingTable()">
+                <div class="status-button status-button-pending"></div>
+              </th>
+              <th></th>
+              <th></th>
+              <th style="width: 200px" ng-show="pendingTableOpenClose" class="sortable sub"
+                  ng-click="sortByDeviceNamePending()">{{'subscription.pendingDevices' | translate}}
+              </th>
+              <th></th>
+              <th ng-show="pendingTableOpenClose"></th>
+            </tr>
+            </thead>
+            <tbody ng-show="pendingTableOpenClose" class="thin-border-row"
+                   ng-repeat="subscription in filteredSubscriptionsPending | orderBy:pendingOrderBy | filter:searchText">
+            <!--subscription row-->
+            <tr ng-class="{'opacity-blue' : subscription.shoppingCart}" id="pendingRow"
+                class="pendingTable sub-row row-{{subscription.deviceId}}">
+              <!--cross row-->
+              <td class="cross-row" ng-click="onDeleteSubscriptionCLick(subscription, $index)"> X</td>
+
+              <!--transfer row-->
+              <td class="cross-row" ng-click="openModal(subscription, $index)">
+                <a class=" icon-box "><i class="fa fa-exchange " aria-hidden="true"></i></a>
+              </td>
+
+              <!--icon row-->
+              <td class="icon-row" ng-click="onDeviceCLick(subscription)"><i class="fa {{subscription.deviceIcon}} "
+                                                                             style="color: #{{subscription.deviceColor}}"></i>
+              </td>
+
+              <!--device name row-->
+              <td style="width: 200px" ng-click="onDeviceCLick(subscription)"><span style="font-weight: 600">{{subscription.deviceName}}</span>
+              </td>
+
+              <!--message row-->
+              <td ng-click="onDeviceCLick(subscription)"><span ng-if="subscription.deviceStatus == 'PENDING' ">{{'subscription.no.imei' | translate}}</span>
+                <span ng-if="subscription.deviceStatus == 'ENABLED' ">{{subscription.imei}}</span>
+                <span ng-if="!subscription.userPay">
+                                <span ng-if="subscription.subscriptionStatus == 'ENABLED'">
+                                    plan de {{ servicePlanList[subscription.servicePlanId-1].name }} vigiente
+                                </span>
+                            </span>
+              </td>
+
+              <!--planes row-->
+              <td ng-if="!subscription.userPay && !subscription.shoppingCart"
+                  class="shoppingCartListPlan">
+                <div class="pull-right">
+                  <div class="radio inline" ng-repeat="sp in servicePlanList">
+                    <input style="background-color: white" ng-model="checked"
+                           ng-click="planSelected(subscription.deviceId , sp.id)"
+                           type="radio" name="optionsRadios-{{subscription.deviceId}}"
+                           class="planId-{{sp.id}}" id="optionsRadios-{{subscription.deviceId}}-{{sp.id}}"
+                           value="option1-{{subscription.deviceId}}">
+                    <label for="optionsRadios-{{subscription.deviceId}}-{{sp.id}}">{{sp.name}}</label>
+                  </div>
+                </div>
+              </td>
+              <td ng-if="subscription.shoppingCart" ng-click="gotToShoppingCart()">
+                <i class="fa fa-cart-plus blue-web-app" style="float: right"></i>
+                En el carrito
+              </td>
+
+              <td ng-if="subscription.userPay">{{'subscription.waiting.for.tracker.payment' | translate}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="form-group-" style="text-align: center">
+        <div class="">
+          <pagination ng-show="showMaxPendingTable"
+                      previous-text="<"
+                      next-text=">"
+                      first-text="{{'paginator.firstPage' | translate}}"
+                      last-text="{{'paginator.lastPage' | translate}}"
+                      ng-model="currentPendingPage"
+                      total-items="subscriptionsPending.length*2"
+                      max-size="maxSize"
+                      boundary-links="true">
+          </pagination>
+
+        </div>
+        <br style="clear: both">
+      </div>
+    </div><!--End pending devices subscription-->
+
+    <!-- Begin ACTIVE subscription -->
+    <div ng-show="subscriptionsActives.length != 0 " class="center-subscriptions-list-container">
+      <!--ng-show="subscriptionsActives.length != 0 "-->
+      <div class=" table-margin">
+        <table id="table-report-devices-actives" style="cursor: pointer" class="table table-hover">
+          <caption>
+            <div ng-show="activeTableOpenClose" class="filter-block pull-right" style="margin-bottom: -55px;">
+              <div ng-show="activeTableOpenClose && showMaxActiveTable" class="input-group pull-right maxPageDiv"
+                   style="width: 65px">
+                <span class="input-group-addon">{{'report.functions.maxPerPageAddOn' | translate}}</span>
+                <input type="number" class="form-control" id="maxPerActivePage" ng-model="numPerActivesPage"
+                       style="width: 65px">
+              </div>
+            </div>
+          </caption>
+
+          <thead>
+          <tr class="activeTable">
+            <th style="cursor: pointer; width: 20px;" ng-click="showHideActiveTable()">
+              <div class="status-button status-button-active"></div>
+            </th>
+            <th></th>
+            <th></th>
+            <th style="width: 200px" ng-show="activeTableOpenClose" class="sortable sub"
+                ng-click="sortByDeviceNameActive()">
+              {{'subscription.activeDevices' | translate}}
+            </th>
+            <th></th>
+            <th ng-show="activeTableOpenClose"></th>
+          </tr>
+          </thead>
+          <tbody ng-show="activeTableOpenClose" class="thin-border-row"
+                 ng-repeat="subscriptionActive in filteredSubscriptionsActives | orderBy:activeOrderBy | filter:searchText">
+          <!--subscriptionActive row-->
+          <tr id="activeRow" class="sub-row row-{{subscriptionActive.deviceId}}">
+            <!--cross row-->
+            <td class="cross-row" ng-click="onDeleteSubscriptionCLick(subscriptionActive, $index)">X</td>
+
+            <!--transfer row-->
+            <td class="cross-row" ng-click="openModal(subscriptionActive, $index)">
+              <a class=" icon-box"><i class="fa fa-exchange " aria-hidden="true"></i></a>
+            </td>
+
+            <!--icon row-->
+            <td class="icon-row" ng-click="onDeviceCLick(subscriptionActive)"><i
+                 class="fa {{subscriptionActive.deviceIcon}} " style="color: #{{subscriptionActive.deviceColor}} "></i>
+            </td>
+
+            <!--device name row-->
+            <td ng-click="onDeviceCLick(subscriptionActive)"><span style="font-weight: 600">{{subscriptionActive.deviceName}}</span>
+            </td>
+
+            <!--message row-->
+            <td ng-click="onDeviceCLick(subscriptionActive)">{{'subscription.enabled.till' | translate}}
+              {{subscriptionActive.subscriptionEnd}}
+            </td>
+
+            <!--planes row-->
+            <td ng-if="!subscriptionActive.shoppingCart" class="shoppingCartListPlan">
+              <div class="radio inline" ng-repeat="sp in servicePlanList">
+                <input ng-model="checked"
+                       type="radio" name="optionsRadios-{{subscriptionActive.deviceId}}"
+                       class="planId-{{sp.id}}" id="optionsRadios-{{subscriptionActive.deviceId}}-{{sp.id}}"
+                       ng-click="planSelected(subscriptionActive.deviceId , sp.id)"
+                       value="option1-{{subscriptionActive.deviceId}}">
+                <label for="optionsRadios-{{subscriptionActive.deviceId}}-{{sp.id}}">
+                  {{sp.name}}
+                </label>
+              </div>
+            </td>
+
+            <td ng-if="subscriptionActive.shoppingCart" ng-click="gotToShoppingCart()"><i
+                 class="fa fa-cart-plus  blue-web-app" style="float: right"> </i></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-group-" style="text-align: center">
+        <pagination ng-show="showMaxActiveTable"
+                    previous-text="<"
+                    next-text=">"
+                    first-text="{{'paginator.firstPage' | translate}}"
+                    last-text="{{'paginator.lastPage' | translate}}"
+                    ng-model="currentActivePage"
+                    total-items="subscriptionsActives.length + maxSize"
+                    max-size="maxSize"
+                    boundary-links="true">
+        </pagination>
+      </div>
+      <br>
+    </div><!--End device active subscription-->
+
+    <!--Begin device EXPIRED subscription -->
+    <div ng-show="subscriptionsInactives.length != 0 " class="center-subscriptions-list-container">
+      <div class=" table-margin">
+        <table id="table-report-devices-inactives" style="cursor: pointer" class="table table-hover">
+          <caption>
+            <div ng-show="activeTableOpenClose && showMaxInactiveTable"
+                 class="filter-block pull-right captionInactives">
+
+              <div ng-if="subscriptionsInactives.length > maxSize" ng-show="inactiveTableOpenClose"
+                   class="input-group pull-right maxPageDiv" style="width: 65px">
+                <span class="input-group-addon">{{'report.functions.maxPerPageAddOn' | translate}}</span>
+                <input type="number" class="form-control" id="maxPerInactivesPage" ng-model="numPerInactivesPage"
+                       style="width: 65px">
+              </div>
+            </div>
+          </caption>
+
+          <thead>
+          <tr id="inactiveRow" class="inactiveTable">
+
+            <th style="cursor: pointer; width: 20px;" ng-click="showHideInactiveTable()">
+              <div class="status-button status-button-inactive"></div>
+            </th>
+            <th></th>
+            <th></th>
+            <th style="width: 200px" ng-show="inactiveTableOpenClose"
+                class="sortable sub" ng-click="sortByDeviceNameInactive()">
+              {{'subscription.inactiveDevices' | translate}}
+            </th>
+            <th></th>
+            <th ng-show="inactiveTableOpenClose"></th>
+          </tr>
+          </thead>
+          <tbody ng-show="inactiveTableOpenClose" class="thin-border-row"
+                 data-ng-repeat="subscriptionInactive in filteredSubscriptionsInactives | orderBy:inactiveOrderBy | filter:searchText">
+          <!--filteredSubscriptionsInactives-->
+          <!--subscriptionInactive row-->
+          <tr class="sub-row row-{{subscriptionInactive.deviceId}}">
+            <!--cross row-->
+            <td class="cross-row" ng-click="onDeleteSubscriptionCLick(subscriptionInactive, $index)"> X</td>
+
+            <!--transfer row-->
+            <td class="cross-row" ng-click="openModal(subscriptionInactive, $index)">
+              <a class=" icon-box"><i class="fa fa-exchange " aria-hidden="true"></i></a>
+            </td>
+
+            <!--icon row-->
+            <td class="icon-row" ng-click="onDeviceCLick(subscriptionInactive)"><i
+                 class="fa {{subscriptionInactive.deviceIcon}} "
+                 style="color: #{{subscriptionInactive.deviceColor}} "></i></td>
+
+            <!--device name row-->
+            <td ng-click="onDeviceCLick(subscriptionInactive)"><span style="font-weight: 600">{{subscriptionInactive.deviceName}}</span>
+            </td>
+
+            <!--message row-->
+            <td ng-click="onDeviceCLick(subscriptionInactive)">Vencido desde el
+              {{subscriptionInactive.subscriptionEnd}}
+            </td>
+
+            <!--planes row-->
+            <td ng-if="!subscriptionInactive.shoppingCart" class="shoppingCartListPlan">
+              <div class="radio inline" ng-repeat="sp in servicePlanList">
+                <input ng-model="checked"
+                       ng-click="planSelected(subscriptionInactive.deviceId , sp.id)"
+                       type="radio" name="optionsRadios-{{subscriptionInactive.deviceId}}"
+                       class="planId-{{sp.id}}"
+                       id="optionsRadios-{{subscriptionInactive.deviceId}}-{{sp.id}}"
+                       value="option1-{{subscriptionInactive.deviceId}}">
+
+                <label for="optionsRadios-{{subscriptionInactive.deviceId}}-{{sp.id}}">{{sp.name}}</label>
+              </div>
+            </td>
+
+            <td ng-if="subscriptionInactive.shoppingCart" ng-click="gotToShoppingCart()"><i
+                 class="fa fa-cart-plus  blue-web-app" style="float: right"> </i></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-group-" style="text-align: center">
+        <div>
+          <pagination
+               ng-show="showMaxInactiveTable"
+               previous-text="<"
+               next-text=">"
+               first-text="{{'paginator.firstPage' | translate}}"
+               last-text="{{'paginator.lastPage' | translate}}"
+               ng-model="currentActivePage"
+               total-items="subscriptionsActives.length + maxSize"
+               max-size="maxSize"
+               boundary-links="true">
+          </pagination>
+        </div>
+
+        <div style="clear: both"></div>
+      </div>
+
+    </div><!--End device expired subscription -->
+
+    <!-- Begin button send item to shopping cart-->
+    <div class="center-subscriptions-list-container">
+      <div class="add-to-shopping-cart">
+
+        <div ng-show="emptySubscriptionList" style="width: 100%">
+          <h5 style="text-align: right;" class="blue-web-app">
+            <span style="font-weight: bold; border: none"> {{'subscription.empty.list.message' | translate}} </span>
+          </h5>
+
+          <div style="clear: both"></div>
+        </div>
+        <a ng-show="!emptySubscriptionList" style="width: 100%; font-size: 1em" id="add-to-shopping-cart"
+           ng-click="addSelectionToShoppingCart()"
+           class="btn btn-primary btn-lg pull-right addToShoppingCartButton pending">
+          <i class="fa fa-shopping-cart fa-lg"></i>
+          {{'subscription.addToShoppingCart' | translate }}
+        </a>
+
+        <a ng-show="emptySubscriptionList" style="width: 100%; font-size: 1em"
+           href="#/add-device"
+           class="btn btn-primary btn-lg pull-right ">
+          {{'subscription.button.create.new' | translate }}
+        </a>
+      </div>
+      <br style="clear: both"/>
+    </div> <!--End button send to shopping cart-->
+  </div>
+</div>
+</div>
+
+<div ng-include="'common/dialogs/go-to-shopping-cart-dialog.html'"></div>
+<div ng-include="'common/dialogs/device-info-dialog.html'"></div>
+<div ng-include="'common/dialogs/delete-subscription-dialog.html'"></div>
+<div ng-include="'common/dialogs/dialog_transfer-device.html'"></div>
+<div ng-show="!account.hasDevice" ng-include="'common/instructions/subscriptions-management.html'"></div>
+<script>
+  $(window).ready(function () {
+    var $window = $(window);
+
+    function checkHeight() {
+      var windowHsize = $window.height();
+      var windowsize = $window.width();
+      if (windowsize >= 992) {
+        $(".center").css("height", windowHsize - 160);
+      }
+    }
+
+    checkHeight();
+    $(window).resize(checkHeight);
+  });
+</script>

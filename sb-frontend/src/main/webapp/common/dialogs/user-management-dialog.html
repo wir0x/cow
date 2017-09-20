@@ -1,0 +1,96 @@
+<!-- Modal Add New User -->
+<div class="modal fade" id="modalNewUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'userManagement.user.addNew' | translate }}</h4>
+            </div>
+            <form id="userForm-{{user.id}}" role="form" name="userForm" class="form-horizontal" >
+                <div class="modal-body">
+                    <div ng-include="'app/users/form/user-form.html'"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                            ng-disabled="isBtnNewUserActive(userForm)"
+                            ng-click="registerUser(user)">
+                        {{'lbl.save' | translate }}
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        {{'lbl.close' | translate }}
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal add new user-->
+
+<!-- Modal Change Password -->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="modalAdminChangePassword" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <label class="modal-title"><b>{{'userManagement.user.changePassword' | translate }} a: {{user.name | uppercase}}</b></label>
+            </div>
+            <form role="form" name="form">
+                <div class="modal-body">
+                    <div class="row">
+                    <div class="col-md-6 form-group" ng-class="{ 'has-warning' : form.newPassword.$invalid && !form.newPassword.$pristine }">
+                        <label for="newPassword">{{'userManagement.user.passwordNew' | translate }}</label>
+                        <input type="password" class="form-control" id="newPassword" ng-model="user.passwordNew" name="newPassword" ng-minlength='6' ng-maxlength='20' required>
+                        <p ng-show="form.newPassword.$invalid && !form.newPassword.$pristine" class="help-block">La contraseña debe ser mayor a 6 dígitos y menor a 20</p>
+                    </div>
+                    <div class="col-md-6 form-group" ng-class="{ 'has-warning' : form.passwordConfirm.$error.noMatch && !form.passwordConfirm.$pristine}">
+                        <label for="passwordConfirm">{{'userManagement.user.passwordConfirm' | translate }}</label>
+                        <input type="password" class="form-control" id="passwordConfirm" ng-model="user.passwordConfirm" name="passwordConfirm" ng-minlength="6" pw-check="user.passwordNew" required>
+                        <p ng-show="form.passwordConfirm.$error.noMatch && !form.passwordConfirm.$pristine" class="help-block">{{'validator.confirm.password'| translate }}</p>
+                    </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="alert alert-warning" ng-show="currentUser.companyTest">
+                        <i class="fa fa-warning fa-fw fa-lg"></i><strong>{{'lbl.warning'| translate }}</strong> {{'lbl.user.test.changePasswordNotAllowed'| translate }}
+                    </div>
+                    <input type="button" class="btn-sm btn btn-default" data-dismiss="modal" value="{{'lbl.close' | translate }}" ng-click="close(form)">
+                    <input type="button" class="btn-sm btn btn-success" data-dismiss="modal" ng-click="changeAdminPasswordUser(form,user)" value="{{'lbl.save' | translate }}">
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal change password-->
+
+<!-- Modal Delete User -->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="modalDeleteUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'userManagement.user.deleteUser' | translate }}</h4>
+            </div>
+            <div class="modal-body">
+                <p>{{'userManagement.user.deleteUser.message' | translate }} <b>{{user.name|uppercase}}</b>?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">
+                    {{'lbl.close' | translate }}
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-click="deleteUser(user)">
+                    {{'lbl.delete' | translate }}
+                </button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal delete user-->

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+  <title ng-bind="title + ' | TECNOLAC - CONTROL'">TECNOLAC- CONTROL</title>
+
+  <!-- bootstrap -->
+  <link rel="stylesheet" type="text/css" href="css/libs/bootstrap.min.css"/>
+
+  <link rel="stylesheet" type="text/css" href="css/libs/font-awesome.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/libs/nanoscroller.css"/>
+
+  <!-- global styles -->
+  <link rel="stylesheet" type="text/css" href="css/theme_styles.css"/>
+
+  <!-- google font libraries -->
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400'
+        rel='stylesheet' type='text/css'>
+
+  <!-- libraries -->
+  <link rel="stylesheet" type="text/css" href="css/angular.css"/>
+  <link rel="stylesheet" type="text/css" href="css/loading-bar.css"/>
+  <link rel="stylesheet" type="text/css" href="css/libs/bootstrap-iconpicker.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/libs/pick-a-color-1.2.3.min.css"/>
+  <link rel="stylesheet" type="text/css" href="css/libs/nifty-component.css"/>
+  <link rel="stylesheet" type="text/css" href="css/libs/datepicker.css"/>
+  <link rel="stylesheet" type="text/css" href="css/libs/bootstrap-timepicker.css"/>
+  <link rel="stylesheet" type="text/css" href="css/libs/select2.css"/>
+
+
+  <!-- notifications -->
+  <link rel="stylesheet" type="text/css" href="css/libs/ns-default.css"/>
+  <link rel="stylesheet" type="text/css" href="css/libs/ns-style-bar.css"/>
+  <link rel="stylesheet" type="text/css" href="css/libs/ns-style-theme.css"/>
+  <link rel="stylesheet" type="text/css" href="css/libs/ns-style-growl.css"/>
+
+  <!-- local styles -->
+  <link rel="stylesheet" type="text/css" href="css/styleMap.css"/>
+  <link rel="stylesheet" type="text/css" href="css/buho-styles.css"/>
+
+
+  <!-- Favicon -->
+  <!--<link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon"/>-->
+
+
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.0/css/bootstrap2-toggle.min.css" rel="stylesheet">
+
+  <!--[if lt IE 9]>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond.min.js"></script>
+  <![endif]-->
+
+  <script>
+    (function (i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function () {
+             (i[r].q = i[r].q || []).push(arguments)
+           }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+           m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-62221135-1', 'auto');
+    ga('send', 'pageview');
+
+  </script>
+</head>
+<body ng-controller="AppController">
+<!--<div id="theme-wrapper">-->
+<div ng-include='"common/main.html"'></div>
+
+<!-- set the correct theme -->
+<script>document.body.className = 'theme-whbl fixed-footer';</script>
+
+<!-- global scripts -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.nanoscroller.min.js"></script>
+
+<!-- libraries -->
+<script src="js/libs/iconset-fontawesome-4.1.0.min.js"></script>
+<script src="js/libs/bootstrap-iconpicker.min.js"></script>
+<script src="js/libs/bootstrap-datepicker.min.js"></script>
+<script src="js/libs/bootstrap-timepicker.min.js"></script>
+<script src="js/libs/modernizr.custom.js"></script>
+<script src="js/libs/classie.js"></script>
+<script src="js/libs/modalEffects.js"></script>
+<script src="js/libs/notificationFx.js"></script>
+<script src="js/libs/tinycolor-0.9.15.min.js"></script>
+<script src="js/libs/pick-a-color-1.2.3.min.js"></script>
+<script src="js/libs/select2.min.js"></script>
+
+<!-- this page specific scripts -->
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTVFGPLegGdOPlvUnvtvaTkVN1mhxa1IU&;sensor=true&libraries=geometry&libraries=drawing">
+</script>
+
+<!-- angular libs -->
+<script src="js/angular.min.js"></script>
+<script src="js/angular-translate.min.js"></script>
+<script src="js/angular-translate-loader-static-files.min.js"></script>
+<script src="js/angular-route.min.js"></script>
+<script src="js/angular-animate.min.js"></script>
+<script src="js/loading-bar.js"></script>
+<script src="js/angular.easypiechart.min.js"></script>
+<script src="js/libs/ui-bootstrap-tpls-0.12.1.min.js"></script>
+
+<script src="js/maps/lodash.js"></script>
+<script src="js/maps/angular-google-maps.js"></script>
+<script src="js/libs/moment-with-locales.min.js"></script>
+
+
+<!-- this page specific scripts -->
+<script src="js/libs/jquery.dataTables.min.js"></script>
+<script src="js/libs/jquery.dataTables.bootstrap.js"></script>
+
+<!-- for reports -->
+<script src="js/libs/tableExport.js"></script>
+<script src="js/libs/jquery.base64.js"></script>
+<script src="js/libs/sprintf.js"></script>
+<script src="js/libs/jspdf.js"></script>
+<script src="js/libs/base64.js"></script>
+
+<!-- data tables -->
+<script src="js/libs/dataTables.fixedHeader.js"></script>
+<script src="js/libs/dataTables.tableTools.js"></script>
+<script src="js/libs/angular-datatables.min.js"></script>
+
+
+<!-- angular scripts -->
+<script src="app/app.module.js"></script>
+<script src="app/app.config.js"></script>
+<script src="app/app.routers.js"></script>
+
+<!--// Commons module -->
+<script src="common/services/data.service.js"></script>
+<script src="common/services/security.service.js"></script>
+<script src="common/constants/app.constant.js"></script>
+<script src="common/directives/app.directives.js"></script>
+<script src="common/security/security.route.js"></script>
+<script src="common/security/login/login.controller.js"></script>
+<script src="common/security/password/reset/reset-password.controller.js"></script>
+<script src="common/security/password/forgot/forgot-password.controller.js"></script>
+
+<!--// Current Position module -->
+<script src="app/currentposition/current-position.controller.js"></script>
+
+<!--// Historical module -->
+<script src="app/historical/historical.controller.js"></script>
+
+<!--// GeoFence module -->
+<script src="app/geofences/geo-fence.controller.js"></script>
+
+<!--// Devices module -->
+<script src="app/devices/devices.route.js"></script>
+<script src="app/devices/configuration/device-config.controller.js"></script>
+<script src="app/devices/management/device-management.controller.js"></script>
+<script src="app/devices/registration/device-registration.controller.js"></script>
+<script src="app/devices/status/devices-status.controller.js"></script>
+
+<!--// Accounts module -->
+<script src="app/accounts/accounts.route.js"></script>
+<script src="app/accounts/management/accounts-management.controller.js"></script>
+<script src="app/accounts/status/account-status.controller.js"></script>
+
+<!--// Admin module -->
+<script src="app/admin/contact/contact-us.controller.js"></script>
+<script src="app/admin/transactions/transactions.controller.js"></script>
+
+<!--// Users module -->
+<script src="app/users/user-management.js"></script>
+
+<!--// Reports module -->
+<script src="app/reports/reports.route.js"></script>
+<script src="app/reports/reports.controller.js"></script>
+<script src="app/reports/report-detail.controller.js"></script>
+
+<!--// Subscriptions module -->
+<script src="app/subscriptions/subscriptions.route.js"></script>
+<script src="app/subscriptions/shoppingcart/shopping-cart.controller.js"></script>
+<script src="app/subscriptions/management/subscriptions-management.controller.js"></script>
+<script src="app/subscriptions/subscriptions.controller.js"></script>
+
+
+<!-- theme scripts -->
+<script src="js/scripts.js"></script>
+
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.0/js/bootstrap2-toggle.min.js"></script>
+
+<script>
+
+  if (!window.console) {
+    window.console = {
+      log: function () { /* do something */
+      }
+    };
+  }
+
+  angular.element(document).ready(function () {
+    (function () {
+
+      // Get the service http to make AJAX request.
+      var $myHttp = angular.bootstrap().get('$http');
+
+      // At this moment only one language is managed
+      window.mydefaultlanguage = {id: 1, languageCode: "es"};
+
+      // Load translate file loader
+      var $injectorTranslate = angular.injector(["pascalprecht.translate"]);
+      var $translateStaticFilesLoader = $injectorTranslate.get("$translateStaticFilesLoader");
+
+      var bootstrapApp = function (lang) {
+        $translateStaticFilesLoader({
+          prefix: 'languages/',
+          key: lang.languageCode,
+          suffix: '.json'
+        }).then(function (trans) {
+          window.translationsContent = trans;
+          angular.bootstrap(document, ["buho-tracking"]);
+        }, function (error) {
+          window.translationsContent = [];
+          angular.bootstrap(document, ["buho-tracking"]);
+        });
+      };
+      bootstrapApp(window.mydefaultlanguage);
+    })();
+  });
+
+  //On device, close the bootstrap menu on menu selection click
+  $(document).on('click', '.navbar-collapse.in', function (e) {
+    if ($(e.target).is('a')) {
+      $(this).collapse('hide');
+    }
+  });
+
+</script>
+</body>
+</html>

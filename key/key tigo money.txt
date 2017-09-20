@@ -1,0 +1,38 @@
+KEY's TIGO MONEY FOR TEST AND PRODUCTION
+
+
+********** TEST **************
+========================================================================
+Tigo Money encryption key:
+4RI1PKHEEIDSJR1NSNJ9P81B
+
+Tigo Money Id Key:
+f613e3ee393f2d33510cfe97197def05a881c650ef2f4d029c6fb2bb2b754e628fc6d1d82c06d4639823cc8a40507491335067b8fa3eca9b28e0a07cce75ac4a
+
+Tigo money web service URL:
+http://190.129.208.178:96/PasarelaServices/CustomerServices?wsdl
+
+# Phone number, CI and PIN to Test
+number: 77667549
+CI: 4719986
+PIN: 2540
+==========================================================================
+
+
+********** PRODUCTION **************
+==========================================================================
+Tigo Money Encryption Key:
+1HOOSUZVXJXLMS4KCH42STEY
+
+Tigo Money Id Key:
+0ffbd6227bc93ad8fab4f152ad381432a610085cb5407ce1ad5fe12ff1a44bf6527903e24c1cf0577b4bc730a604f201980b650e111cb2532a54b2ddf68f5bdd
+
+Tigo money web service URL:
+https://vipagos.com.bo/PasarelaServices/CustomerServices?wsdl
+https://pasarela.tigomoney.com.bo/PasarelaServices/CustomerServices?wsdl
+============================================================================
+
+
+
+
+

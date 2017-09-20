@@ -1,0 +1,159 @@
+<!--//Google Maps-->
+<div class="row">
+  <div class="wrapper-map">
+    <div id="map_canvas">
+      <ui-gmap-google-map center="map.center" zoom="map.zoom" dragging="map.dragging" options="map.options"
+                          events="map.events" control="map.control">
+        <ui-gmap-markers idKey="positions.idKey" models="positions" coords="'self'" options="map.optionsMarker"
+                         labelContent="map.positions.content" events="map.markerEvents"></ui-gmap-markers>
+        <ui-gmap-marker ng-repeat="marker in markers" coords="marker.coords" options="marker.options"
+                        idkey="marker.id"></ui-gmap-marker>
+        <ui-gmap-window idKey="map.infoWindow.id" coords='map.infoWindow' show="map.infoWindow.doShow"
+                        closeclick="closeInfoWindow">
+          <div>
+            <label><b>{{'lbl.name' |translate}}: </b>{{map.infoWindow.device.name}}</label><br/>
+            <label><b>{{'lbl.speed' |translate}}: </b>{{map.infoWindow.speed}} km/h</label><br/>
+            <label><b>{{'lbl.date' |translate}}: </b>{{map.infoWindow.date | date: 'dd/MM/yyyy'}}</label><br/>
+            <label><b>{{'lbl.time' |translate}}: </b>{{map.infoWindow.date | date:'HH:mm:ss'}}</label><br/>
+            <label ng-show="{{map.infoWindow.device.type == 'Kids' ||map.infoWindow.device.type == 'Personal'  }}">
+              <b>{{'lbl.battery' |translate}}: </b>{{map.infoWindow.battery}}%</label>
+          </div>
+        </ui-gmap-window>
+      </ui-gmap-google-map>
+    </div>
+  </div>
+</div>
+
+<!--// Sidebar-->
+<div class="row">
+  <div class="main-box clearfix cp-side-menu">
+    <div class="onglet"><a><i class="fa fa-reply"></i></a></div>
+    <header class="main-box-header main-box-header-up clearfix">
+      <a class="on-close"><i class="fa fa-share"></i></a>
+      <h2 class="h2-header-up">{{'currentPosition.average' | translate}}</h2>
+    </header>
+
+    <div class="main-box-body twice clearfix">
+      <div class="panel-group accordion icon-enter" id="accordion">
+        <div class="panel panel-default" ng-repeat="elem in rcp">
+          <div class="panel-heading">
+            <h4 class="panel-title {{elem.device.id}}" ng-click="openAccordion(elem)">
+              <a href="#collapse-{{elem.device.id}}" id="pnl-{{elem.device.id}}" class="accordion-toggle collapsed"
+                 data-toggle="collapse" data-parent="#accordion">
+                <i id="ico-{{elem.device.id}}" class="fa {{elem.device.icon}}"
+                   style="color:#{{elem.device.color}};"></i>
+                {{elem.device.name}}
+              </a>
+            </h4>
+          </div>
+          <div id="collapse-{{elem.device.id}}" style="height: 2px;" class="panel-collapse collapse">
+            <div class="panel-body max-width" ng-hide="elem.position">{{'current.position.info.noPositions' |
+              translate}}
+            </div>
+            <div class="panel-body" ng-show="elem.position">
+              <label><b>{{'lbl.date' | translate}}:</b> {{elem.position.date | date: 'dd/MM/yyyy'}}</label><br/>
+              <label><b>{{'lbl.time' | translate}}:</b> {{elem.position.date | date:'HH:mm:ss'}}</label><br/>
+              <label><b>{{'lbl.speed' | translate}}:</b> {{elem.position.speed}} Km/h.</label><br/>
+              <label class="text-center" title='Expirado' ng-if="elem.subscription.status=='EXPIRED'"><b>{{'subscription'|translate}}: </b>
+                Expirada <i class="fa fa-circle red"></i></label>
+              <label class="text-center" title='Activo' ng-if="elem.subscription.status=='ENABLED'"><b>{{'subscription'
+                | translate}}:</b> Activa <i class="fa fa-circle green"></i></label>
+              <label class="text-center" title='Sin suscripción' ng-if="elem.subscription.status=='DISABLED'"><b>{{'subscription'
+                | translate}}:</b> Sin suscripción <i class="fa fa-circle yellow"></i></label>
+              <label ng-hide="elem.position"><b>{{'lbl.battery' | translate}}:</b> {{elem.position.battery}}%</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="has-warning">
+        <i class='fa fa-clock-o fa-lg' style='color: firebrick'></i>
+        <label class="help-block">{{'lbl.clock.message'|translate}}</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-show="!account.hasDevice" ng-include="'common/instructions/current-position.html'"></div>
+
+<script>
+  // Position of the menu remain fixed only on the x-axis
+  $(window).scroll(function () {
+    $('.cp-side-menu').css('right', '-' + $(window).scrollLeft() + 'px');
+    $('.cp-side-menu').css('top', '-' + $(window).scrollTop() + 'px');
+  });
+
+  // Disable the user to open accordion when the menu is close
+  if ($('.onglet').css('visibility') != 'hidden') {
+    $(".panel-collapse").css('display', 'none');
+  }
+
+  var speed = 200,
+       delay = 1000,
+       menuSetPx = '-294px';
+
+  setTimeout(function () {
+    $(".cp-side-menu").stop().animate({marginRight: menuSetPx}, speed * 5);
+  }, delay);
+
+
+  $(window).ready(function () {
+    // Optimalisation: Store the references outside the event handler:
+    var $window = $(window);
+    var close = true;
+    $('.on-close').on('click', function () {
+      if ($('.cp-side-menu').css('margin-right') >= '-1px') {
+        $(".cp-side-menu").stop().animate({marginRight: menuSetPx}, speed);
+        $(".icon-enter").stop().animate({marginLeft: '-67px'}, speed);
+        $(".panel-collapse").css('display', 'none');
+        $('.onglet').stop().animate({left: '-48px'}, speed - 10);
+        $('.onglet').stop().animate({width: '48px'}, speed - 10);
+        close = true;
+        checkWidth();
+      }
+    });
+
+    $('.onglet').on('click', function () {
+      if ($('.cp-side-menu').css('margin-right') <= menuSetPx) {
+        $(".cp-side-menu").stop().animate({marginRight: '-1px'}, speed);
+        $(".icon-enter").stop().animate({marginLeft: '0px'}, speed);
+        $(".panel-collapse").css('display', 'block');
+        $('.onglet').stop().animate({left: '0px'}, speed);
+        $('.onglet').stop().animate({width: '0px'}, speed);
+        close = false;
+        checkWidth();
+      }
+    });
+
+    $('body').css("height", $('.cp-side-menu').height());
+    function checkWidth() {
+      var windowsize = $window.width();
+      if (windowsize >= 1185) {
+        if (close) {
+          $(".wrapper-map").css("width", windowsize - 70);
+        } else {
+          $(".wrapper-map").css("width", windowsize - 320);
+        }
+      } else {
+        $(".wrapper-map").css("width", windowsize - 30);
+      }
+    }
+
+    function checkHeight() {
+      var windowHsize = $window.height();
+      var windowsize = $window.width();
+      if (windowsize >= 1185) {
+        $(".wrapper-map").css("height", windowHsize - 110);
+      }
+    }
+
+    // Execute on load
+    checkWidth();
+    checkHeight();
+
+    // Bind event listener
+    $(window).resize(checkWidth);
+    $(window).resize(checkHeight);
+  });
+
+
+</script>

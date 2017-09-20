@@ -1,0 +1,108 @@
+<!-- Modal Change Password -->
+<div class="modal fade" data-backdrop="static" data-keyboard="false"  id="modalAddSmartphone" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'userManagement.user.changePassword' | translate }}</h4>
+            </div>
+            <form role="form" name="form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="password">{{'userManagement.user.password' | translate }}</label>
+                        <input type="password" class="form-control" id="password"
+                               ng-model="user.password" name="passwordOld"
+                               placeholder="{{'userManagement.user.password' | translate }}" ng-minlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">{{'userManagement.user.passwordNew' | translate }}</label>
+                        <input type="password" class="form-control" id="newPassword"
+                               ng-model="user.passwordNew" name="password"
+                               placeholder="{{'userManagement.user.passwordNew' | translate }}" ng-minlength="5" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordConfirm">{{'userManagement.user.passwordConfirm' | translate }}</label>
+                        <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm"
+                               ng-model="user.passwordConfirm"
+                               placeholder="{{'userManagement.user.passwordConfirm' | translate }}" ng-minlength="5"
+                               required>
+                        <span class="alert-warning"
+                              ng-show="form.passwordConfirm.$dirty && !arePasswordsEquals(form)">
+                            {{'validator.confirm.password'| translate }}
+                        </span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="alert alert-warning" ng-show="currentUser.companyTest">
+                        <i class="fa fa-warning fa-fw fa-lg"></i>
+                        <strong>{{'lbl.warning'| translate }}</strong> {{'lbl.user.test.changePasswordNotAllowed'| translate }}
+                    </div>
+                    <button type="button" class="btn btn-primary"
+                            data-dismiss="modal"
+                            ng-disabled="isBtnChangePasswordActive(form)"
+                            ng-click="changePasswordUser(user)">
+                        {{'lbl.save' | translate }}
+                    </button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{'lbl.close' | translate }}
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal change password-->
+
+<div ng-hide="firstFormAllreadySend" class="center-subscription-container" style="margin-top: -30px">
+    <h3 class="blue-web-app" style="
+                    font-weight: initial;
+                    border-bottom: solid 1px #03a9f4;
+                    padding-bottom: 5px; text-align: justify">Agregar un dispositivo</h3>
+    <form ng-submit="linkingSmartphone(smartphone)" role="form" name="formLinkingSmartphone">
+        <div class="form-group">
+            <input required
+                   style="
+                                text-align: center;
+                                padding-left:20px;"
+                   type="text"
+                   placeholder="Nombre del dispositivo"
+                   maxlength="30"
+                   ng-minlength="3"
+                   ng-change="subscription.name = subscription.name.split('  ').join(' ')"
+                   class="form-control" id="usr"
+                   ng-model="smartphone.name">
+            <input required
+                   valid-number style="
+                                text-align: center;"
+                   type="text"
+                   name="id_device"
+                   placeholder="Identificado del dispositivo"
+                   class="form-control"
+                   id="id_device"
+                   ng-model="smartphone.generatedId">
+            <!--ng-keypress="hideWarningMessage()"-->
+                             <span ng-show="formSubscription.telfSub.$error.minlength" class="help-inline">
+                               <i>{{ 'lbl.min.digit.telf'| translate }}</i>
+                            </span>
+        </div>
+        <div style="clear: both"></div>
+
+        <!--SUBMIT BUTTON-->
+        <a style="width: 100%; font-size: 1em;"
+           id="button-add-subscription"
+           ng-click="linkingSmartphone(smartphone)"
+           class="btn btn-primary btn-lg pull-right btn-link-special">
+            <i class="fa fa-plus-circle fa-lg"></i>
+            {{'add.device.createDevice' | translate }}
+        </a>
+
+        <div style="clear: both"></div>
+
+    </form>
+
+
+    <h6 style="font-size: medium; text-align: justify; line-height: 25px">
+        {{ 'add.device.message' | translate}} <a href="#/contact">{{'add.device.link' | translate}}</a>
+    </h6>
+</div>

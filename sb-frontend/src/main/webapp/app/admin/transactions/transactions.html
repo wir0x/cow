@@ -1,0 +1,111 @@
+<div class="row">
+  <div class="main-box">
+    <header class="main-box-header clearfix">
+      <h2>Transacciones Tigo Money</h2>
+    </header>
+    <div class="main-box-body clearfix">
+      <form role="form">
+        <div class="form-group form-group-select2">
+
+          <!-- Account list -->
+          <select style="width:250px" id="sel2"
+                  ng-model="transaction.account"
+                  ng-change="setDeviceList(transaction.account)"
+                  ng-options="account as account.accountName for account in accounts">
+            <option value=""> {{'select.all' | translate }}</option>
+          </select>
+
+          <!-- Device list-->
+          <select style="width:250px" class="sel2"
+                  ng-model="transaction.device"
+                  ng-options="device as device.name for device in devices">
+            <option value=""> {{'select.all' | translate }}</option>
+          </select>
+
+          <!-- Status List -->
+          <select style="width:250px" class="sel2"
+                  ng-model="transaction.status"
+                  ng-options="status as status.name for status in statusPayment">
+            <option value=""> {{'select.all' | translate }}</option>
+          </select>
+
+          <button type="submit" class="btn btn-success" ng-click="findTransactions()">BUSCAR</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="main-box clearfix">
+      <header class="main-box-header clearfix">
+
+        <div class="filter-block pull-right">
+          <div class="form-group pull-left">
+            <input type="text" ng-model="searchText" class="form-control">
+            <i class="fa fa-search search-icon"></i>
+          </div>
+
+        </div>
+      </header>
+      <div class="main-box-body clearfix">
+        <div class="table-responsive">
+          <table id="table-transactions" class="table table-hover">
+            <thead>
+            <tr>
+              <th>{{'account' | translate}}</th>
+              <th>{{'device'|translate}}</th>
+              <th>{{'plan' | translate}}</th>
+              <th>{{'bs' | translate}}</th>
+              <th>{{'pay.status' | translate}}</th>
+              <th>{{'date.pay'|translate}}</th>
+              <th>{{'line'| translate}}</th>
+              <th>{{'paid.user'|translate}}</th>
+              <th>{{'paid.from'|translate}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr data-ng-repeat="trans in transactions | filter:searchText ">
+              <td>{{trans.account.name}}</td>
+              <td>{{trans.deviceName}}</td>
+              <td>{{trans.plan}}</td>
+              <td>{{trans.amount}}</td>
+              <td>
+                                <span ng-show="{{trans.statusPayment == 'PROCESSED'}}"
+                                      class="badge badge-success ng-binding">{{'success'|translate}}</span>
+                <span ng-show="{{trans.statusPayment == 'ERROR'}}"
+                      class="badge badge-danger ng-binding">{{'failed'|translate}}</span>
+              </td>
+              <td>{{trans.creationDate | date:'medium'}}</td>
+              <td>{{trans.line}}</td>
+              <td>{{trans.userName}}</td>
+              <td>{{trans.payFrom}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-group" style="text-align: center">
+          <pagination
+               previous-text="{{'paginator.previous' | translate}}"
+               next-text="{{'paginator.next' | translate}}"
+               first-text="{{'paginator.firstPage' | translate}}"
+               last-text="{{'paginator.lastPage' | translate}}"
+               ng-model="currentPage"
+               total-items="positions.length"
+               max-size="maxSize"
+               boundary-links="true">
+          </pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(function ($) {
+    //nice select boxes
+    $('.sel2').select2();
+  });
+
+</script>

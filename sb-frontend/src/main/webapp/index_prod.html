@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+    <title ng-bind="title + ' | TECNOLAC - CONTROL'">TECNOLAC- CONTROL</title>
+
+    <!-- unified css for the project -->
+    <link rel="stylesheet" type="text/css" href="buho.css"/>
+
+    <!-- Favicon -->
+    <!--<link type="image/x-icon" href="img/favicon.ico" rel="shortcut icon"/>-->
+
+    <!-- google font libraries -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,300|Titillium+Web:200,300,400'
+          rel='stylesheet'
+          type='text/css'>
+
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+    <![endif]-->
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-62221135-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+</head>
+<body ng-controller="AppController">
+<!--<div id="theme-wrapper">-->
+<div ng-include='"common/main.html"'></div>
+
+<!-- set the correct theme -->
+<script>document.body.className = 'theme-whbl fixed-footer';</script>
+
+<!-- this page specific scripts -->
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTVFGPLegGdOPlvUnvtvaTkVN1mhxa1IU&;sensor=true&libraries=geometry&libraries=drawing">
+</script>
+
+<!-- unified scripts -->
+<script src="buho-libs.js"></script>
+<script src="buho.js"></script>
+
+<script>
+    if (!window.console) {
+        window.console = {
+            log: function () { /* do something */
+            }
+        };
+    }
+
+    angular.element(document).ready(function () {
+        (function () {
+
+            // Get the service http to make AJAX request.
+            var $myHttp = angular.bootstrap().get('$http');
+
+            // At this moment only one language is managed
+            window.mydefaultlanguage = {id: 1, languageCode: "es"};
+
+            // Load translate file loader
+            var $injectorTranslate = angular.injector(["pascalprecht.translate"]);
+            var $translateStaticFilesLoader = $injectorTranslate.get("$translateStaticFilesLoader");
+
+            var bootstrapApp = function (lang) {
+                $translateStaticFilesLoader({
+                    prefix: 'languages/',
+                    key: lang.languageCode,
+                    suffix: '.json'
+                }).then(function (trans) {
+                    window.translationsContent = trans;
+                    angular.bootstrap(document, ["buho-tracking"]);
+                }, function (error) {
+                    window.translationsContent = [];
+                    angular.bootstrap(document, ["buho-tracking"]);
+                });
+            };
+            bootstrapApp(window.mydefaultlanguage);
+        })();
+    });
+
+    //On device, close the (bootstrap) menu on menu selection click
+    $(document).on('click','.navbar-collapse.in',function(e) {
+        if( $(e.target).is('a') ) {
+            $(this).collapse('hide');
+        }
+    });
+</script>
+</body>
+</html>

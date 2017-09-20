@@ -1,0 +1,31 @@
+<!--New Account Modal-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="tigoMoney" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content tm">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'shopping.cart.payWithTigoMoney' | translate}}</h4>
+            </div>
+            <form role="form" name="accountForm">
+                <div class="modal-body">
+                    <div ng-include="'app/subscriptions/forms/tigo-money-form.html'"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="form-group has-warning">
+                        <span class="help-block has-warning">¡{{'subscription.field.required'|translate}}!</span>
+                    </div>
+
+                    <div ng-show="tMspinner.Validate" style="float: left;">
+                        <img src="img/loading.gif" alt=""/>
+                        <label>{{'shopping.cart.waiting.validation'| translate}}</label>
+                    </div>
+                    <button type="button" title="{{'lbl.save'| translate}}" class="btn-sm btn btn-primary" data-dismissible="false" ng-class=" {'pendingButton' : !accountForm.$valid} " ng-click="tigoMoneyPayment()">
+                        {{'shopping.cart.pay'| translate}}<i class="fa fa-angle-right"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

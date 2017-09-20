@@ -1,0 +1,13 @@
+.idea
+target
+*.iml
+**/*.DS_Store
+sb-rest/src/main/java/ch/swissbytes/wsclient/wsimport
+
+
+# gradle
+target/
+classes/
+.gradle/
+**/build
+

@@ -1,0 +1,158 @@
+<div class="row">
+  <div class="alert alert-warning"
+       ng-if="reportDevices.length==0"
+       style="margin-bottom: 0px; text-align: center">
+    <i class="fa fa-warning fa-fw fa-lg"></i>
+    <strong>{{'current.position.info.head'|translate}}</strong>{{'current.position.info.noDevices'|translate }}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="main-box">
+      <div class="form-inline">
+        <div class="form-group">
+          <div class="form-group">
+            <select name="device-list" class="form-control" id="selectADevice" ng-model="selectedDevice"
+                    ng-options="device.name for device in deviceList">
+              <option value="" disabled selected>{{ 'userManagement.user.devices' | translate }}</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+                        <span for="datepicker" class="input-group-addon">
+                        <i class="fa fa-calendar"></i></span>
+            <date-picker id="startDate" ng-model="startDate">
+            </date-picker>
+          </div>
+
+          <div class="input-group">
+                    <span for="datepicker" class="input-group-addon">
+                        <i class="fa fa-calendar"></i></span>
+            <date-picker id="endDate" ng-model="endDate">
+            </date-picker>
+          </div>
+
+          <div class="input-group">
+            <a class="btn btn-info"
+               title="{{'report.functions.generateReport.title'|translate}}"
+               ng-click="searchReport()">
+              {{'report.functions.generateReport'| translate}}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="main-box clearfix">
+      <header class="main-box-header clearfix">
+        <h2 class="pull-left">{{'report.title' | translate}}</h2>
+
+        <div class="filter-block pull-right">
+          <div class="form-group pull-left">
+            <input type="text" ng-model="searchText" class="form-control">
+            <i class="fa fa-search search-icon"></i>
+          </div>
+          <a download="report" target="_blank"
+             title="{{'report.functions.exportExcel'|translate}}"
+             ng-click="exportToExcel('#table-report-devices-hidden')"
+             class="btn btn-primary pull-right">
+            {{'report.functions.exportExcel' | translate}}
+          </a>
+          <a data-toggle="modal" target="_blank"
+             title="{{'report.functions.printSelection'|translate}}"
+             ng-click="printSelection()"
+             class="btn btn-primary pull-right">
+            {{'report.functions.printSelection' | translate}}
+          </a>
+          <a data-toggle="modal" target="_blank"
+             title="{{'report.functions.printAll'|translate}}"
+             ng-click="printAllTable()"
+             class="btn btn-primary pull-right">
+            {{'report.functions.printAll' | translate}}
+          </a>
+        </div>
+      </header>
+      <div class="main-box-body clearfix" ng-show="reportGenerated">
+        <div class="input-group pull-right" style="width: 65px">
+          <span class="input-group-addon">{{'report.functions.maxPerPageAddOn' | translate}}</span>
+          <input type="number" class="form-control" id="maxPerPage" ng-model="numPerPage" style="width: 65px">
+        </div>
+
+        <div class="table-responsive">
+          <table id="table-report-devices" class="table table-hover">
+            <caption>{{selectedDevice.name}}</caption>
+            <thead>
+            <tr>
+              <th>Nro</th>
+              <th>{{'report.label.table.date' | translate}}</th>
+              <th>{{'report.label.table.hour'| translate}}</th>
+              <th>{{'report.label.table.latitude' | translate}}</th>
+              <th>{{'report.label.table.longitude' | translate}}</th>
+              <th>{{'report.label.table.position' | translate}}</th>
+              <th>{{'report.label.table.speed' | translate}}</th>
+            </tr>
+            </thead>
+            <tbody data-ng-repeat="position in filteredPositions | filter:searchText">
+            <tr>
+              <td>{{position.index}}</td>
+              <td>{{position.date}}</td>
+              <td>{{position.time}}</td>
+              <td>{{position.latitude}}</td>
+              <td>{{position.longitude}}</td>
+              <td><a href="https://www.google.com/maps?q={{position.latitude}},{{position.longitude}}"
+                     target="_blank"
+                     title="https://www.google.com/maps?q={{position.latitude}},{{position.longitude}}">
+                https://www.google.com/maps?q={{position.latitude}},{{position.longitude}}
+              </a></td>
+              <td>{{position.speed}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-responsive" ng-show="false">
+          <table id="table-report-devices-hidden" class="table table-hover">
+            <caption>{{selectedDevice.name}}</caption>
+            <thead>
+            <tr>
+              <th>Nro</th>
+              <th>{{'report.label.table.date' | translate}}</th>
+              <th>{{'report.label.table.hour'| translate}}</th>
+              <th>{{'report.label.table.latitude' | translate}}</th>
+              <th>{{'report.label.table.longitude' | translate}}</th>
+              <th>{{'report.label.table.position' | translate}}</th>
+              <th>{{'report.label.table.speed' | translate}}</th>
+            </tr>
+            </thead>
+            <tbody data-ng-repeat="position in positions">
+            <tr>
+              <td>{{position.index}}</td>
+              <td>{{position.date}}</td>
+              <td>{{position.time}}</td>
+              <td>{{position.latitude}}</td>
+              <td>{{position.longitude}}</td>
+              <td>https://www.google.com/maps?q={{position.latitude}},{{position.longitude}}</td>
+              <td>{{position.speed}}</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="form-group" style="text-align: center">
+          <pagination
+               previous-text="{{'paginator.previous' | translate}}"
+               next-text="{{'paginator.next' | translate}}"
+               first-text="{{'paginator.firstPage' | translate}}"
+               last-text="{{'paginator.lastPage' | translate}}"
+               ng-model="currentPage"
+               total-items="positions.length"
+               max-size="maxSize"
+               boundary-links="true">
+          </pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,272 @@
+<!-- Warning message when device is selected -->
+<div class="row">
+    <div class="alert alert-warning"
+         ng-if="deviceList.length==0"
+         style="margin-bottom: 0px; text-align: center">
+        <i class="fa fa-warning fa-fw fa-lg"></i>
+        <strong>{{'current.position.info.head'|translate}}</strong>{{'current.position.info.noDevices'|translate }}
+    </div>
+</div>
+
+
+<!-- Functions  device list, Date and Generate Report button -->
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="main-box clearfix">
+            <header class="main-box-header clearfix" style="display:inline-grid">
+                <div class="form-inline">
+                    <select
+                       class="form-control pull-left"
+                       id="selectADevice"
+                       ng-model="deviceSelected"
+                       ng-options="device.name for device in devices"
+                       ng-change="activeButtons()">
+                        <option value="" disabled selected>
+                            {{ 'userManagement.user.devices' | translate }}
+                        </option>
+                    </select>
+
+                    <div class="input-group">
+                        <span for="datepicker" class="input-group-addon">
+                            <i class="fa fa-calendar"></i>
+                        </span>
+                        <date-picker
+                           id="startDate"
+                           ng-model="startDate"
+                           ng-required="true">
+                        </date-picker>
+                    </div>
+                    <a class="btn btn-info"
+                       title="{{'report.functions.generateReport.title'|translate}}"
+                       ng-click="generateReport()">
+                        {{'report.functions.generateReport'| translate}}
+                    </a>
+
+                    <div ng-show="report.travels" class="form-group has-warning">
+                            <span class="help-block has-warning">
+                                {{'idle.time.message' |translate}}
+                            </span>
+                    </div>
+                    <!--<a data-toggle="modal" target="_blank"-->
+                    <!--title="{{'report.functions.printAll'|translate}}"-->
+                    <!--ng-click="printAllTable()"-->
+                    <!--ng-disabled="isSelectedDevice"-->
+                    <!--class="btn btn-info btn-primary pull-right">-->
+                    <!--{{'report.functions.printAll' | translate}}-->
+                    <!--</a>-->
+                </div>
+            </header>
+        </div>
+    </div>
+</div>
+
+<!-- alert when no there are detailed report -->
+<div class="alert alert-warning"
+     ng-show="report.travels.length == 0"
+     style="margin-bottom:15px; text-align: center">
+    <h4>
+        <i class="fa {{deviceSelected.icon}} fa-2x"></i>
+        <strong>{{deviceSelected.name}}</strong>
+    </h4>
+    {{'report.not.has.detailed.report'|translate}}
+</div>
+
+<!-- Detail Report -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="table-responsive">
+            <table id="table-detailed-report" class="table">
+                <!-- header report-->
+                <thead>
+                <tr style="background-color:whitesmoke">
+                    <td>
+                        <div class="col-md-6 col-sm-6 col-xs-6">
+                            <!-- Idle time -->
+                            <p><span><strong>{{'total.idle.time'|translate}}</strong></span>
+                                {{report.parkTime|number:2}} Hr.</p>
+
+                            <!--  Idle time numbers -->
+                            <p><strong><span>{{'lbl.number.of.stop'|translate}}</span></strong>
+                                {{report.stopNumbers}}</p>
+
+                            <!-- Checkbox stretch -->
+                            <div class="checkbox-nice" style="padding-left:20px">
+                                <input type="checkbox" id="checkbox-1" ng-model="checkboxModel.stretch"/>
+                                <label for="checkbox-1"><strong>{{'lbl.traveled.stretch'|translate}}</strong></label>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6" style="margin-top:8px">
+                            <!-- Distance traveled -->
+                            <p><span><strong>{{'total.time.traveled'|translate}}</strong></span>
+                                {{report.travelTime|number:2}} Hr.</p>
+
+                            <!-- Distance traveled-->
+                            <p><span><strong>{{'distance.traveled'|translate}}</strong></span>
+                                {{report.travelDistance|number:2}} Km.</p>
+
+                            <!-- Checkbox idle time-->
+                            <div class="checkbox-nice">
+                                <input type="checkbox" id="checkbox-2" ng-model="checkboxModel.stop">
+                                <label for="checkbox-2"> <strong>{{'lbl.show.stops'|translate}}</strong></label>
+                            </div>
+
+                        </div>
+
+                    </td>
+                </tr>
+                </thead>
+                <!-- Body report idle time -->
+                <tbody>
+                <tr ng-repeat="travel in report.travels" ng-hide="!report.travels">
+                    <td>
+                        <div class="panel-group accordion">
+                            <!-- header idle time -->
+                            <div name="header-idle-time" ng-show="checkboxModel.stop" class="panel panel-default">
+                                <div class="panel-heading" style="background-color: #4091ce">
+                                    <h4 class="panel-title">
+                                        <div class="row">
+                                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                                <label><strong>{{ $index+1}}º
+                                                    {{'stop'|translate}}</strong></label>
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                                <label><strong>{{'lbl.total'|translate}}</strong></label>
+                                                {{travel.timeParked}} Min.
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                                <label><strong>{{'lbl.from'|translate}}</strong></label>
+                                                {{travel.startParked | date:'HH:mm:ss'}}
+                                            </div>
+                                            <div class="col-md-3 col-sm-3 col-xs-6">
+                                                <label><strong>{{'lbl.to'|translate}}</strong></label>
+                                                {{travel.endParked | date:'HH:mm:ss'}}
+                                            </div>
+                                        </div>
+                                    </h4>
+                                </div>
+                            </div>
+                            <!-- Stretch -->
+                            <div name="header-traveled-time" ng-show="checkboxModel.stretch"
+                                 class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a id="collapse-header-{{travel.$$hashKey}}" class="accordion-toggle collapsed"
+                                           data-toggle="collapse"
+                                           data-parent="#accordion" href="#collapse-head-{{travel.$$hashKey}}">
+                                            <div class="row">
+
+                                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                                    <label><strong>{{ $index+1}}º
+                                                        {{'stretch'|translate}}</strong></label>
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                                    <label><strong>{{'lbl.total'|translate}}</strong></label>
+                                                    {{travel.timeTraveled}} Min.
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                                    <label><strong>{{'lbl.from'|translate}}</strong></label>
+                                                    {{(travel.startTraveled) | date:'HH:mm:ss'}}
+                                                </div>
+                                                <div class="col-md-3 col-sm-3 col-xs-6">
+                                                    <label><strong>{{'lbl.to'|translate}}</strong></label>
+                                                    {{(travel.endTraveled)| date:'HH:mm:ss'}}
+                                                </div>
+
+                                            </div>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapse-head-{{travel.$$hashKey}}" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <!-- Summary Positions -->
+                                            <div class="col-md-6">
+                                                <div class="table-responsive">
+                                                    <table id="detailedReport"
+                                                           class="table table-condensed table-hover">
+                                                        <tbody>
+                                                        <tr>
+                                                            <td>{{'lbl.initial.traveled'|translate}}
+                                                                <i class='fa fa-map-marker fa-2x'
+                                                                   style='color: #2ecc71;'></i>
+                                                            </td>
+                                                            <td>{{'lbl.end.traveled'|translate}}
+                                                                <i class='fa fa-map-marker fa-2x'
+                                                                   style='color: crimson;'></i>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>{{'lbl.traveled.distance'|translate}}</td>
+                                                            <td class="text-center ">
+                                                                {{travel.distance}}
+                                                                Km.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{{'lbl.maxSpeed'|translate }}</td>
+                                                            <td class="text-center ">
+                                                                {{travel.maxSpeed }} Km/h.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{{'lbl.avgSpeed'|translate }}</td>
+                                                            <td class="text-center ">
+                                                                {{travel.avgSpeed}} Km/h
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+
+                                            <!--Google maps-->
+                                            <div class="col-md-6">
+                                                <div id="world-map" style="width: 100%; height: 370px">
+                                                    <div class="jvectormap-container"
+                                                         style="width: 100%; height: 100%; position: relative; overflow: hidden; background-color: rgb(255, 255, 255);">
+                                                        <ui-gmap-google-map
+                                                           id="map-detailed-report"
+                                                           center="travel.maps.center"
+                                                           zoom="travel.maps.zoom"
+                                                           dragging="travel.maps.dragging"
+                                                           options="travel.maps.options"
+                                                           events="travel.maps.events"
+                                                           control="travel.maps.control"
+                                                        >
+                                                            <ui-gmap-markers
+                                                               models="travel.markers"
+                                                               coords="'coords'"
+                                                               options="'options'"
+                                                               fit="true"
+                                                               idkey="'id'"
+                                                            >
+                                                            </ui-gmap-markers>
+                                                            <ui-gmap-polyline
+
+                                                               path="travel.polyLine.path"
+                                                               stroke="travel.polyLine.stroke"
+                                                               visible='travel.polyLine.visible'
+                                                               geodesic='travel.polyLine.geodesic'
+                                                               fit="false"
+                                                               editable="travel.polyLine.editable"
+                                                               draggable="travel.polyLine.draggable"
+                                                            >
+                                                            </ui-gmap-polyline>
+                                                        </ui-gmap-google-map>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

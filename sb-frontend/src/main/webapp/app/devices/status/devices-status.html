@@ -1,0 +1,30 @@
+<h4 class="title">Estado de los dispositivos GPS</h4>
+<table datatable="ng" dt-options="dtOptions" class="table table-hover">
+  <thead>
+  <tr>
+    <th class="text-center" title="Cuenta">Cuenta</th>
+    <th class="text-center" title="Nombre dispositivo">Dispositivo</th>
+    <th class="text-center" title="Nombre dispositivo">Imei</th>
+    <th class="text-center" title="Tipo de dispositivo">Tipo Disp.</th>
+    <th class="text-center" title="Ultima posición">Ultima posición</th>
+    <th class="text-center" title="Estado suscripción">Suscripción.</th>
+    <th class="text-center" title="Fecha de expiración de la Suscripción">Expira Susc.</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="e in devicesStatus">
+    <td class="text-center">{{e.account.nameAccount}}</td>
+    <td class="text-center">{{e.device.name}}</td>
+    <td class="text-center">{{e.device.imei}}</td>
+    <td class="text-center">{{e.device.deviceType}}</td>
+    <td class="text-center">{{e.position.date}} {{e.position.time}}</td>
+    <td class="text-center" title='Expirado' ng-if="e.subscription.status=='EXPIRED'">Expirado <i
+         class="fa fa-circle red"></i></td>
+    <td class="text-center" title='Activo' ng-if="e.subscription.status=='ENABLED'">Activo <i
+         class="fa fa-circle green"></i></td>
+    <td class="text-center" title='Sin suscripción' ng-if="e.subscription.status=='DISABLED'">Sin suscripción <i
+         class="fa fa-circle yellow"></i></td>
+    <td class="text-center">{{e.subscription.endDate}}</td>
+  </tr>
+  </tbody>
+</table>

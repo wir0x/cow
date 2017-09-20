@@ -1,0 +1,39 @@
+<!-- Modal Add New Fence -->
+<div class="modal fade" id="modalNewFence" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'control.fence.addNew' | translate }}</h4>
+            </div>
+            <form id="fenceForm-{{fence.id}}" role="form" name="fenceForm" class="my-form">
+                <div class="modal-body">
+                    <div ng-include="'app/geofences/form/geo-fence-form.html'"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal" ng-disabled="!fenceForm.$valid" ng-click="registerFence(fence)">{{'lbl.save' | translate }}</button>
+                    <button type="button" class="btn btn-sm btn-default" data-dismiss="modal">{{'lbl.close' | translate }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delete Fence -->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="modalDeleteFence" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'control.fence.deleteFence' | translate }}</h4>
+            </div>
+            <div class="modal-body">
+                <label>{{'control.fence.deleteFence.message' | translate }}<b>{{fence.name}}</b> ?</label>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="deleteFence(fence)">{{'lbl.delete' | translate }}</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">{{'lbl.close' | translate }}</button>
+            </div>
+        </div>
+    </div>
+</div>

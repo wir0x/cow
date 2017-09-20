@@ -1,0 +1,153 @@
+<!--// nav header historical -->
+<div class="row">
+  <div class="col-md-3">
+    <select id="devices" class="form-control" ng-model="device" ng-change="loadHistorical()"
+            ng-options="device as device.name for device in devices">
+      <option value="" disabled selected>{{ 'select.device' | translate }}</option>
+    </select>
+  </div>
+  <div class="col-lg-2 col-md-3 col-sm-12 col-xs-12">
+    <a class="btn btn-default" ng-click="historyToday(device.id, date)" title="{{'btn.today.title'|translate}}">{{'btn.today'| translate}}</a>
+    <a class="btn btn-default" ng-click="historyYesterday(device.id, date)" title="{{'btn.yesterday.title'|translate}}">{{'btn.yesterday' | translate}}</a>
+    <a class="btn btn-default" ng-click="historyPreviousDate()" title="{{'btn.previousDay.title'|translate}}"><i class="fa fa-chevron-left"></i></a>
+    <a class="btn btn-default" ng-click="historyNextDate()" title="{{'btn.nextDay.title'|translate}}"><i
+           class="fa fa-chevron-right"></i></a>
+  </div>
+  <div class="col-md-3">
+    <div class="input-group date">
+      <date-picker id="datepicker" ng-model="date" class="form-control" ng-change="loadHistorical()">
+      </date-picker>
+      <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+    </div>
+  </div>
+</div>
+
+<!--// content map and detail devices position-->
+<div class="row">
+  <!--// Google maps -->
+  <div class="col-md-9 col-sm-12">
+    <div class="main-box">
+      <div class="wrapper-map">
+        <div id="map_canvas">
+          <ui-gmap-google-map center="map.center" zoom="map.zoom" dragging="map.dragging" options="map.options"
+                              events="map.events" control="map.control">
+            <ui-gmap-polyline ng-repeat="p in polylines" path="p.path" stroke="p.stroke" visible='p.visible'
+                              geodesic='p.geodesic' fit="false" editable="p.editable"
+                              draggable="p.draggable"></ui-gmap-polyline>
+            <ui-gmap-markers idKey="map.positions.idKey" models="map.positions" coords="'self'"
+                             options="map.optionsMarker" labelContent="map.positions.content" events="map.markerEvents">
+              <ui-gmap-window options="map.windowOptions" idKey="map.openedPositionsWindow.id"
+                              coords='map.openedPositionsWindow' show="map.openedPositionsWindow.doShow"
+                              closeClick="map.openedPositionsWindow.closeClick">
+                <div>
+                  <b>{{'lbl.name' |translate}}: </b>{{device.name}}<br/>
+                  <b>{{'lbl.speed' |translate}}: </b>{{map.openedPositionsWindow.speed}} km/h<br/>
+                  <b>{{'lbl.date' |translate}}: </b>{{map.openedPositionsWindow.date |date:'dd-MM-yyyy' }}<br/>
+                  <b>{{'lbl.time' |translate}}: </b>{{map.openedPositionsWindow.date |date:'HH:mm:ss'}}<br/>
+                  <div ng-show="{{map.openedPositionsWindow.battery!=null}}">
+                    <b>{{'lbl.battery' |translate}}: </b>{{map.openedPositionsWindow.battery}} %
+                  </div>
+                </div>
+              </ui-gmap-window>
+            </ui-gmap-markers>
+            <ui-gmap-marker ng-repeat="marker in markers" coords="marker.coords" options="marker.options"
+                            idkey="marker.id"></ui-gmap-marker>
+          </ui-gmap-google-map>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--// Device position information -->
+  <div class="col-md-3 col-sm-12">
+    <div class="main-box clearfix project-box emerald-box">
+      <div class="main-box-body clearfix">
+        <div class="project-box-header"
+             ng-class="{'red-bg':historic.subscription.status == 'EXPIRED', 'gray-bg':historic.subscription.status=='DISABLED', 'emerald-bg':historic.subscription.status == 'ENABLED'}">
+          <div class="name text-center">
+            <a href="">
+              <span ng-show="historic.subscription.status == 'EXPIRED'">
+                <i class="fa {{historic.device.icon}} fa-lg" style="color:{{'#'+historic.device.color }}"></i>
+                {{historic.device.name}} - {{'expired.subscription'|translate | uppercase}}
+              </span>
+              <span ng-show="historic.subscription.status == 'DISABLED'">
+                <i class="fa {{historic.device.icon}} fa-lg" style="color:{{'#'+historic.device.color }}"></i>
+                {{historic.device.name}} - {{'without.subscription'|translate | uppercase}}
+              </span>
+              <span ng-show="historic.subscription.status == 'ENABLED'">
+                <i class="fa {{historic.device.icon}} fa-lg" style="color:{{'#'+historic.device.color }}"></i>
+                {{historic.device.name}}
+              </span>
+            </a>
+          </div>
+        </div>
+        <div class="project-box-content">
+          <div ng-show="!historic.positions && historic.subscription.status == 'ENABLED'">
+            <span class="fa-fw fa-lg fa-2x"></span>
+            <p><label class="label label-info">No tiene historial en esta fecha.</label></p>
+          </div>
+          <div ng-show="historic.subscription.status == 'EXPIRED'">
+            <label> Se ha deshabilitado el historial en esta fecha porque no tiene una suscripción
+              <b>ACTIVA.</b></label>
+            <label ng-show="historic.subscription.status == 'EXPIRED'"><b>Nota: </b>Si su suscripción se encuentra EXPIRADA sólo podrá ver historial menores a la fecha de expiración:</label>
+            <label ng-show="historic.subscription.status != 'ENABLED'">
+              Puede adquirir una nueva suscripción desde el menú:
+              <a href="#/subscriptions-management"><i class="fa fa-mobile fa-lg"></i> Dispositivos</a>
+              ó pasar por <a href="#/contact"><i class="fa fa-home fa-lg"></i>nuestra oficina</a> para actualizar su
+              suscripci&oacute;n.
+            </label>
+          </div>
+        </div>
+        <div class="project-box-footer clearfix" ng-show="historic.positions && historic.subscription.status=='ENABLED'">
+          <a href="">
+            <span class="value">{{infoHistoric.avgSpeed}} Km/h.</span>
+            <span class="label">{{'lbl.avgSpeed'| translate}}</span>
+          </a>
+          <a href="">
+            <span class="value">{{infoHistoric.distance}} Km.</span>
+            <span class="label">{{'lbl.distance'| translate}}</span>
+          </a>
+          <a href="">
+            <span class="value">{{infoHistoric.initTraveled | date:'HH:mm:ss a'}}</span>
+            <span class="label">{{'first.position.to'| translate}}</span>
+          </a>
+          <a href="">
+            <span class="value">{{infoHistoric.endTraveled | date:'HH:mm:ss a'}}</span>
+            <span class="label">{{'last.position.to'| translate}}</span>
+          </a>
+        </div>
+        <div class="project-box-ultrafooter clearfix">
+          <a href="" class="link pull-left">
+            <span class="value"><b>Inicio suscripci&oacute;n:</b> {{historic.subscription.startDate}}</span>
+          </a>
+        </div>
+        <div class="project-box-ultrafooter clearfix">
+          <a href="" class="link pull-left">
+            <span class="value"><b>Fin suscripci&oacute;n</b>: {{historic.subscription.endDate}}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-show="!account.hasDevice" ng-include="'common/instructions/history.html'"></div>
+
+<script>
+// Position of the menu remain fixed only on the x-axis
+$(window).ready(function () {
+// Optimisation: Store the references outside the event handler:
+var $window = $(window);
+
+function checkHeight() {
+var windowHsize = $window.height(), windowsize = $window.width();
+if (windowsize >= 1185) {
+$(".wrapper-map").css("height", windowHsize - 155);
+}
+}
+
+// Execute on load
+checkHeight();
+
+// Bind event listener
+$(window).resize(checkHeight);
+});
+</script>

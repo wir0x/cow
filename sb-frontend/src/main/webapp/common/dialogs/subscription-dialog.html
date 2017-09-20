@@ -1,0 +1,119 @@
+<!--New Subscription Modal-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="newSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'create.subscription' | translate}}</h4>
+            </div>
+            <form role="form" name="subscriptionForm">
+                <div class="modal-body">
+                    <div ng-include="'app/subscriptions/forms/subscription.html'"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" title="{{'cancel' | translate}}" class="btn-sm btn btn-default" data-dismiss="modal">{{'cancel' | translate}}</button>
+                    <button type="button" title="{{'lbl.save'| translate}}" class="btn-sm btn btn-primary" data-dismiss="modal" ng-click="registerNewSubscription()" ng-disabled="isValidSubscriptionForm(subscriptionForm) || isValidForm">{{'lbl.save'| translate}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Edit Subscription Modal-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="editSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'subscription.icon.edit' | translate}}</h4>
+            </div>
+
+            <form role="form" name="formEditSubscription">
+                <div class="modal-body">
+                    <div class="col-lg-6 col-sm-6 "><h3>{{subscription.accountName}}</h3></div>
+                    <div class="col-lg-6 col-sm-6 "><h3>{{subscription.deviceName}}</h3></div>
+                    <div class="col-lg-12 col-sm-12 form-group">
+                        <select class="form-control" ng-model="subscription.servicePlanId" name="select-service-plan" ng-required="true" ng-change="adjustDates(subscription.servicePlanId)" ng-options="sp.id as sp.description for sp in servicePlanList">
+                            <option value="" disabled selected>{{ 'subscription.select.plan' | translate }}</option>
+                        </select>
+                    </div>
+
+                    <!-- Start Date -->
+                    <div class="col-lg-6 col-sm-6 form-group ">
+                        <label for="startDate">{{'startDate' | translate}}</label>
+                        <div class="input-group">
+                            <span for="startDate" class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <date-picker id="startDate" ng-change="setFormatStartDate()" ng-model="subscription.startDate"></date-picker>
+                        </div>
+                    </div>
+
+                    <!-- End Date -->
+                    <div class="col-lg-6 col-sm-6 form-group">
+                        <label for="endDate">{{'endDate' | translate}}</label>
+                        <div class="input-group"><span for="endDate" class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <date-picker id="endDate" ng-change="setFormatEndDate()" ng-model="subscription.endDate"></date-picker>
+                        </div>
+                    </div>
+
+                    <span class="alert-warning" ng-show="">{{'lbl.required'|translate}}</span>
+                    <!-- Input Max SMS-->
+                    <div class="form-group">
+                        <label for="inputMaxSms">{{'max.sms' | translate}}</label>
+                        <input name="address" ng-model="subscription.maxSms" type="number" class="form-control" id="inputMaxSms" placeholder="{{'max.sms' | translate }}">
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" title="{{'lbl.save'| translate}}" class="btn-sm btn btn-primary" data-dismiss="modal" ng-click="updateSubscription()">
+                        {{'lbl.save'| translate}}
+                    </button>
+                    <button type="button" title="{{'lbl.close' | translate}}" class="btn-sm btn btn-default" data-dismiss="modal">
+                        {{'lbl.close' | translate}}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Delete Subscription-->
+<div class="modal fade"  data-backdrop="static" data-keyboard="false" id="deleteSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">
+                    {{'subscription.icon.delete'| translate}}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+
+                        <label>
+                            {{'subscription.icon.delete.message'| translate}}
+                        </label>
+                        <br/>
+                        <label>{{'company' | translate}}: </label>
+                        <span><strong>{{subscription.accountName}}</strong></span>
+                        <label>{{'device' | translate}}: </label>
+                        <span><strong>{{subscription.deviceName}}</strong></span>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button title="{{'device.management.delete.device.button'| translate}}" type="button" data-dismiss="modal" ng-click="deleteSubscription(subscription)" class="btn btn-primary">
+                    {{'device.management.delete.device.button'| translate}}
+                </button>
+                <button title="{{'lbl.close' | translate}}" type="button" class="btn btn-default" data-dismiss="modal">
+                    {{'lbl.close' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

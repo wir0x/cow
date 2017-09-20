@@ -1,0 +1,41 @@
+<!--New Account Modal-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="goToShoppingCart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <!--to display if shopping-cart is not in payment process-->
+        <div class="modal-content"  ng-show="!tMspinner.WaitingForPayment">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <i class="fa fa-cart-plus fa-2x blue-web-app"> </i>
+            </div>
+            <form role="form" name="accountForm">
+                <div class="modal-body">
+                    {{numOfItemsAdded}}
+                    <span ng-if="numOfItemsAdded == 1"> {{'shopping.cart.were.added.sing' | translate}}</span>
+                    <span ng-if="numOfItemsAdded != 1"> {{'shopping.cart.were.added.plur' | translate}}</span>
+                    <div style="clear: both;"></div>
+                </div>
+                <div class="modal-footer" >
+                    <button title="{{'lbl.close' | translate}}" type="button" class="btn-sm btn btn-default" data-dismiss="modal">{{'lbl.close' | translate}}</button>
+                    <button type="button" title="{{'subscription.goToShoppingCart'| translate}}" class="btn-sm btn btn-primary" data-dismissible="false" ng-click="goToShoppingCart()">{{'subscription.goToShoppingCart'| translate}}<i class="fa fa-angle-right"></i></button>
+                </div>
+            </form>
+        </div>
+
+        <!--to display if shopping-cart is in payment process-->
+        <div class="modal-content" style="min-height: 300px;"  ng-show="tMspinner.WaitingForPayment">
+            <div  class="shopping-cart-loader-container">
+                <div class="modal-header tm">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="tm-loader-subscription">
+                    <img height="60px" width="60px" src="img/loader.gif" alt=""/>
+                </div>
+                <div style="display: block; margin-left: auto; margin-right: auto; margin-top: 10px; width: 260px; text-align: center">
+                    <label>{{'subscription.waiting.for.payment' | translate}}</label>
+                    <label>{{'subscription.waiting.for.payment.message' | translate}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

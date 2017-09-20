@@ -1,0 +1,107 @@
+<div id="theme-wrapper">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="main-box clearfix">
+        <header class="main-box-header clearfix">
+          <h2 class="pull-left">{{'accountManagement.title'|translate}}</h2>
+          <div class="filter-block pull-right">
+            <div class="form-group pull-left">
+              <input type="text"
+                     ng-model="searchText"
+                     class="form-control"
+                     placeholder="{{'searchPlaceholder' | translate}}">
+              <i class="fa fa-search search-icon"></i>
+            </div>
+            <a data-toggle="modal"
+               title="{{'account.management.new.account.title' | translate}}"
+               data-target="#newAccount"
+               ng-click="prepareNewAccount()"
+               class="btn btn-primary pull-right"><i class="fa fa-plus-circle fa-lg"></i>
+              {{'title.new.account' | translate}}
+            </a>
+          </div>
+        </header>
+        <div class="main-box-body clearfix">
+          <div class="table-responsive">
+            <table id="table-account-management" class="table table-hover">
+              <thead>
+              <tr>
+                <th>{{'account.management.name' | translate}}</th>
+                <th>{{'account.management.address' | translate}}</th>
+                <th>{{'account.management.phoneNumber' | translate}}</th>
+                <th>{{'account.management.email' | translate}}</th>
+                <th>{{'lbl.admin'|translate}}</th>
+                <th>{{'lbl.status'|translate}}</th>
+                <th>{{'lbl.functions'|translate}}</th>
+              </tr>
+              </thead>
+              <tbody ng-repeat="account in accounts | filter:searchText">
+              <tr>
+                <td>{{account.nameAccount}}</td>
+                <td>{{account.address}}</td>
+                <td>{{account.phoneNumber}}</td>
+                <td>{{account.email}}</td>
+                <td>{{account.user.name}}</td>
+                <td>
+                  <span class="badge badge-danger" ng-show="!account.status">{{account.statusName}}</span>
+                  <span class="badge badge-success" ng-show="account.status">{{account.statusName}}</span>
+                </td>
+                <td style="width: 15%;">
+                  <a data-toggle="modal"
+                     name="edit-account"
+                     title="{{'account.management.edit.account.title'|translate}}"
+                     data-target="#editAccount"
+                     ng-click="prepareEditAccount(account)"
+                     class="table-link">
+                                   <span class="fa-stack">
+								        <i class="fa fa-square fa-stack-2x"></i>
+									    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+								   </span>
+
+                  </a>
+
+                  <a data-toggle="modal"
+                     title="{{'account.management.change.password.title'|translate}}"
+                     data-target="#changePasswordAccountManagement"
+                     ng-click="prepareEditAccount(account)"
+                     class="table-link">
+                                   <span class="fa-stack">
+								        <i class="fa fa-square fa-stack-2x"></i>
+									    <i class="fa fa-key fa-stack-1x fa-inverse"></i>
+
+								   </span>
+
+                  </a>
+
+                  <a data-toggle="modal"
+                     title="{{'account.management.add.device.title'|translate}}"
+                     data-target="#addDeviceAccount"
+                     ng-click="loadDevices(account)"
+                     class="table-link">
+                                        <span class="fa-stack">
+                                            <i class="fa fa-square fa-stack-2x"></i>
+                                            <i class="fa fa-dashcube fa-stack-1x fa-inverse"></i>
+                                        </span>
+                  </a>
+
+                  <a data-toggle="modal"
+                     title="{{'account.management.remove.account.title'|translate}}"
+                     data-target="#deleteAccount"
+                     ng-click="prepareEditAccount(account)"
+                     class="table-link danger">
+							            <span class="fa-stack">
+								            <i class="fa fa-square fa-stack-2x"></i>
+									        <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+								        </span>
+                  </a>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-include="'common/dialogs/account-management-dialog.html'"></div>

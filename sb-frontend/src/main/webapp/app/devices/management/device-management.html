@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="main-box clearfix">
+
+      <header class="main-box-header clearfix">
+        <h2 class="pull-left">{{ 'userManagement.user.devices' | translate }}</h2>
+
+        <div class="filter-block pull-right">
+          <div class="form-group pull-left">
+            <input type="text" ng-model="searchText" class="form-control"
+                   placeholder="{{'device.management.search.placeholder'|translate}}">
+            <i class="fa fa-search search-icon"></i>
+          </div>
+
+          <a data-toggle="modal"
+             title="{{'device.management.add.new' | translate}}"
+             data-target="#newDevice"
+             ng-click="prepareNewDevice()"
+             class="btn btn-primary pull-right">
+            <i class="fa fa-plus-circle fa-lg"></i>
+            {{'device.management.add.new' | translate}}
+          </a>
+        </div>
+      </header>
+      <div class="main-box-body clearfix">
+        <div class="table-responsive">
+          <table id="table-example" class="table table-hover">
+            <thead class="text-center">
+            <tr>
+              <th>{{'device.management.name' | translate}}</th>
+              <th>{{'device.management.imei' | translate}}</th>
+              <th>{{'device.management.type' | translate}}</th>
+              <th>{{'lbl.battery' | translate}}</th>
+              <th>{{'lbl.sos.alarm' | translate}}</th>
+              <th>{{'lbl.battery.alarm' | translate}}</th>
+              <th>{{'device.management.phoneNumber' | translate}}</th>
+              <th>{{'device.management.account.label' | translate}}</th>
+              <th>{{'lbl.functions' | translate}}</th>
+            </tr>
+            </thead>
+
+            <tbody class="centered" data-ng-repeat="device in devices | filter:searchText" data-ng-switch
+                   on="dayDataCollapse[$index]">
+            <tr>
+              <td>{{device.name}}</td>
+              <td>{{device.imei}}</td>
+              <td>{{device.nameDeviceType}}</td>
+              <td>
+                <i ng-show="device.hasBattery" class="fa fa-check-circle fa-lg" style="color: #5cb85c" aria-hidden="true"></i></span>
+                <i ng-show="!device.hasBattery" class="fa fa-ban fa-lg" style="color: #e84e40;" aria-hidden="true"></i>
+              </td>
+              <td>
+                <i ng-show="device.sosAlarm" class="fa fa-check-circle fa-lg" style="color: #5cb85c" aria-hidden="true"></i></span>
+                <i ng-show="!device.sosAlarm" class="fa fa-ban fa-lg" style="color: #e84e40;" aria-hidden="true"></i>
+              </td>
+              <td>
+                <i ng-show="device.batteryAlarm" class="fa fa-check-circle fa-lg" style="color: #5cb85c" aria-hidden="true"></i></span>
+                <i ng-show="!device.batteryAlarm" class="fa fa-ban fa-lg" style="color: #e84e40;" aria-hidden="true"></i>
+              </td>
+              <td>{{device.phoneNumber}}</td>
+              <td>{{device.accountName | uppercase}}</td>
+              <td style="width: 15%;">
+                <a data-toggle="modal"
+                   title="{{'device.management.edit.title'|translate}}"
+                   data-target="#newDevice"
+                   ng-click="prepareEditDevice(device)"
+                   class="table-link info">
+							       <span class="fa-stack">
+								        <i class="fa fa-square fa-stack-2x"></i>
+									    <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+								   </span>
+                </a>
+                <a data-toggle="modal"
+                   title="{{'device.management.remove.title'|translate}}"
+                   data-target="#deleteDevice"
+                   ng-click="prepareEditDevice(device)"
+                   class="table-link danger">
+							       <span class="fa-stack">
+								        <i class="fa fa-square fa-stack-2x"></i>
+									    <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+								   </span>
+                </a>
+
+                <a data-toggle="modal"
+                   title="{{'device.management.title.delete.positions'|translate}}"
+                   data-target="#deletePositions"
+                   ng-click="prepareEditDevice(device)"
+                   class="table-link danger">
+							       <span class="fa-stack">
+								        <i class="fa fa-square fa-stack-2x"></i>
+                                       <i class="fa fa-times fa-stack-1x fa-inverse"></i>
+								   </span>
+                </a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div ng-include="'common/dialogs/device-management-dialog.html'"></div>
+</div>

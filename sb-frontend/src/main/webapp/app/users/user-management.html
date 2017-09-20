@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="main-box clearfix">
+      <header class="main-box-header">
+        <a ng-click="prepareNewUser()" class="btn  btn-sm btn-primary">{{'create.user' | translate }}</a>
+        <label class="pull-right title"><h2>{{'user.management'|translate}}</h2></label>
+      </header>
+
+      <div class="main-box-body clearfix col-md-8">
+        <ng-form name="userManagementForm" id="userManagementForm">
+          <div class="panel-group accordion" id="accordion">
+            <div class="panel panel-default" ng-repeat="user in users">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <a id="collapse-header-{{user.id}}"
+                     class="accordion-toggle {{user.accountAdmin || user.id == undefined? '': 'collapsed '}}"
+                     data-toggle="collapse" data-parent="#accordion" href="#collapse-{{user.id}}">
+                    <label><span class="label label-default" ng-if="user.systemAdmin || user.accountAdmin">
+                                            <span class="label" style="color: #fbed50;"><i
+                                                 class="fa fa-user-secret fa-lg" aria-hidden="true"></i> <b>{{'lbl.accountAdmin' | translate }}</b></span>
+                                        </span></label>
+                    {{user.name}} <span class="badge label-warning" ng-show="!user.id">{{'lbl.pendingChanges' | translate }}</span>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse-{{user.id}}"
+                   class="panel-collapse {{user.accountAdmin || user.id == undefined? 'collapse in ': 'collapse'}}">
+                <div class="panel-body">
+                  <form name="userForm" id="userForm" ng-submit="registerUser(user, userForm)">
+                    <!--/. dialog create new user-->
+                    <div class="col-lg-12">
+                      <div ng-include="'app/users/form/user-form.html'"></div>
+                    </div>
+                    <!--/. add device to user -->
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-include="'common/dialogs/user-management-dialog.html'"></div>
+

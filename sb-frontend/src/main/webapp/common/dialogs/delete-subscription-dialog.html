@@ -1,0 +1,29 @@
+<!--New Account Modal-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="delete-subscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="closeDeleteAlertas()" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'subscription.delete.subscription' | translate}}</h4>
+            </div>
+
+            <div class="modal-body">
+                {{'subscription.delete.subscription.fulltext' | translate}}
+                <div class="accept-container">
+                    <div style="float: right;">
+                        <div class="checkbox-nice checkbox-inline">
+                            <input type="checkbox" id="view_status" class='checkbox style-2 pull-right' ng-click="checkBoxAccept()" ng-model="acceptField"/>
+                            <label for="view_status" class="pull-left"></label>
+                        </div>
+                     </div>
+                    <div class="cb-view-container"><span style="word-spacing: -1px">{{'subscription.sure'|translate }}</span></div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button title="{{'lbl.close' | translate}}" type="button" class="btn btn-default" ng-click="closeDeleteAlertas()" data-dismiss="modal">{{'lbl.close' | translate}}</button>
+                <button title="{{'lbl.save' | translate}}" type="button" class="btn-sm btn btn-danger deleteItemButton" ng-click="deleteDevice()">{{'subscription.delete.subscription.btn' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

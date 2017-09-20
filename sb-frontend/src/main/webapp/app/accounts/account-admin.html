@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="col-md-12 form-group">
+      <label for="inputUserName"><b>{{'complete.name' | translate}} * </b> </label>
+      <input style="display: block" name="userName" type="text" class="form-control" id="inputUserName"
+             ng-model="registerCredentials.name"
+             placeholder="{{'complete.name.example' | translate }}" required>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="inputUserEmail"><b>{{'account.management.email' | translate}} *</b></label>
+        <input style="display: block" type="email" class="form-control" id="inputUserEmail" name="email"
+               ng-pattern="/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+()*$/"
+               ng-model="registerCredentials.email" placeholder="{{'email.example' | translate }}" required>
+        <div class="has-warning" ng-show="!accountForm.email.$valid && accountForm.email.$dirty"><span
+             class="help-block">{{'lbl.invalid.email'|translate}}</span></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="inputUserUsername"><b>{{'userManagement.user.username' | translate }} *</b></label>
+        <input style="display: block" class="form-control" id="inputUserUsername" type="text" name="userLoginName"
+               ng-model="registerCredentials.username" ng-maxlength='50' ng-trim="false" autocomplete="off"
+               ng-change="registerCredentials.username = registerCredentials.username .split(' ').join('')" lowercase
+               placeholder="{{'username.example' | translate }}" required>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="col-md-6">
+      <div class="form-group" ng-show="!account.id">
+        <label for="inputUserPassword"><b>{{'userManagement.new.user.passwordNew' | translate }} *</b></label>
+        <input style="display: block" name="password" type="password" class="form-control" id="inputUserPassword"
+               ng-model="registerCredentials.password" ng-minlength="5" required>
+        <div class="has-warning" ng-show="accountForm.password.$dirty && accountForm.password.$error.minlength"><span
+             class="help-block">{{'validator.short.password'| translate}}</span></div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group" ng-show="!account.id">
+        <label for="passwordConfirm"><b>{{'userManagement.new.user.passwordConfirm' | translate }} *</b></label>
+        <input style="display: block" name="passwordConfirm" type="password" class="form-control" id="passwordConfirm"
+               ng-model="registerCredentials.passwordConfirm" ng-minlength="5" required>
+        <div class="has-warning" ng-show="!arePasswordsEquals(accountForm) && !accountForm.passwordConfirm.$pristine">
+          <span class="help-block">{{'validator.confirm.password'| translate}}</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

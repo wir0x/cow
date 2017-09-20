@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <context-param>
+        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-value>true</param-value>
+    </context-param>
+
+    <filter>
+        <filter-name>CORS Filter</filter-name>
+        <filter-class>ch.swissbytes.module.shared.rest.configuration.CORSFilter</filter-class>
+        <init-param>
+            <param-name>cors.allowed.origins</param-name>
+            <param-value>*</param-value>
+        </init-param>
+        <init-param>
+            <description>A flag that suggests if CORS is supported with cookies</description>
+            <param-name>cors.support.credentials</param-name>
+            <param-value>true</param-value>
+        </init-param>
+        <init-param>
+            <description>A comma separated list of HTTP verbs, using which a CORS request can be made.</description>
+            <param-name>cors.allowed.methods</param-name>
+            <param-value>GET,POST,HEAD,OPTIONS,PUT,DELETE</param-value>
+        </init-param>
+        <init-param>
+            <description>A comma separated list of allowed headers when making a non simple CORS request.</description>
+            <param-name>cors.allowed.headers</param-name>
+            <param-value>Content-Type,X-Requested-With,accept,Origin,Access-Control-Request-Method,Access-Control-Request-Headers,authorization,pragma,if-modified-since,cache-control</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>CORS Filter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+
+    <!-- JAVA MELODY FILTERS -->
+    <filter>
+        <filter-name>monitoring</filter-name>
+        <filter-class>net.bull.javamelody.MonitoringFilter</filter-class>
+        <init-param>
+            <param-name>datasources</param-name>
+            <param-value>java:/buhoDS</param-value>
+        </init-param>
+        <init-param>
+            <param-name>authorized-users</param-name>
+            <param-value>buho-admin:admin.123</param-value>
+        </init-param>
+        <init-param>
+            <param-name>admin-emails</param-name>
+            <param-value>gf.rodrigo@gmail.com,gonza.g8@gmail.com,alexander.aguilar@swissbytes.ch</param-value>
+        </init-param>
+        <init-param>
+            <param-name>mail-session</param-name>
+            <param-value>java:jboss/mail/Default</param-value>
+        </init-param>
+        <init-param>
+            <param-name>mail-periods</param-name>
+            <param-value>day,week,month</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>monitoring</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <listener>
+        <listener-class>net.bull.javamelody.SessionListener</listener-class>
+    </listener>
+</web-app>

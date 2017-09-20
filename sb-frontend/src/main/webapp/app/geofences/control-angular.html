@@ -1,0 +1,141 @@
+<style>
+  #panel {
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    margin-left: -180px;
+    z-index: 5;
+    background-color: #fff;
+    padding: 5px;
+    border: 1px solid #999;
+  }
+</style>
+
+<div class="row">
+  <!-- Begin google maps -->
+  <div class="col-lg-6">
+    <div class="main-box clearfix">
+      <header class="main-box-header clearfix">
+        <h2>{{ 'control.fence' | translate }}</h2>
+      </header>
+      <div class="main-box-body clearfix">
+        <div id="map_canvass">
+          <div id="panel">
+            <input onclick="removeLine();" type=button value="Remove line">
+            <input onclick="addLine();" type=button value="Restore line">
+          </div>
+          <!--<ui-gmap-google-map-->
+          <!--center="map.center"-->
+          <!--zoom="map.zoom"-->
+          <!--draggable="true"-->
+          <!--options="options"-->
+          <!--bounds="map.bounds"-->
+          <!--events="events"-->
+          <!--control="map.control"-->
+          <!-->-->
+          <!--<ui-gmap-drawing-manager-->
+          <!--ng-hide="isEditing"-->
+          <!--options="drawingManagerOptions"-->
+          <!--control="drawingManagerControl"-->
+          <!--events="eventHandler">-->
+          <!--</ui-gmap-drawing-manager>-->
+          <!--<ui-gmap-polygon-->
+          <!--static="true"-->
+          <!--ng-repeat="p in polygons track by p.id"-->
+          <!--path="p.path"-->
+          <!--stroke="p.stroke"-->
+          <!--visible="p.visible"-->
+          <!--geodesic="p.geodesic"-->
+          <!--fill="p.fill"-->
+          <!--fit="false"-->
+          <!--editable="p.editable"-->
+          <!--draggable="p.draggable">-->
+          <!--</ui-gmap-polygon>-->
+          <!--</ui-gmap-google-map>-->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End google maps -->
+
+  <!-- Begin select option device-->
+  <div class="col-lg-6">
+    <div class="form-group">
+      <label>{{ 'userManagement.user.devices' | translate }}</label>
+      <select class="form-control"
+              ng-model="fence.deviceId"
+              ng-change="findFencesByDeviceId(fence.deviceId)"
+              ng-options="device.id as device.name for device in devices">
+        <option value="" disabled selected>{{ 'lbl.select.device' | translate }}</option>
+      </select>
+    </div>
+    <!-- End select option device-->
+
+    <!-- Begin button create new user-->
+    <!--<div class="row">-->
+    <a data-toggle="modal"
+       data-target="#modalNewFence"
+       ng-click="prepareNewFence()"
+       class="btn btn-primary btn-lg pull-right">
+      {{'control.fence.addNew' | translate }}
+    </a>
+    <!--</div>-->
+    <!-- End button create new user-->
+    <br>
+    <!-- Begin accordion -->
+    <div class="row">
+      <div class="main-box-body clearfix">
+        <ng-form name="controlForm" id="controlForm">
+          <div class="panel-group accordion" id="accordion">
+            <div class="panel panel-default"
+                 ng-repeat="fence in fences">
+              <div class="panel-heading" ng-click="loadPolygon(fence)">
+                <h4 class="panel-title">
+                  <a class="accordion-toggle collapsed" data-toggle="collapse"
+                     data-parent="#accordion" href="#collapse-{{fence.id}}"
+                  >
+                    {{fence.name}}
+                    <span class="badge badge-success pull-right" ng-show="fence.status">
+                                            {{'lbl.enabled' | translate }}
+                                        </span>
+                    <span class="badge badge-danger pull-right" ng-hide="fence.status">
+                                            {{'lbl.disabled' | translate }}
+                                        </span>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse-{{fence.id}}" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <form id="fenceForm-{{fence.id}}" role="form" name="fenceForm" class="my-form">
+                    <div class="row">
+                      <div class="col-lg-10">
+                        <div ng-include="'views/forms/fence.html'"></div>
+                      </div>
+                      <div class="col-lg-2">
+                        <a title="{{'lbl.save' | translate }}"
+                           ng-click="updateFence(fence, fenceForm)">
+                          <i class="fa fa-save fa-2x"></i>
+                        </a>&nbsp;
+                        <a title="{{'lbl.delete' | translate }}"
+                           data-toggle="modal"
+                           data-target="#modalDeleteFence"
+                           ng-click="prepareEditFence(fence)">
+                          <i class="fa fa-trash-o fa-2x"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-form>
+      </div>
+    </div>
+    <!-- End accordion -->
+  </div>
+  <!-- End select option device-->
+</div>
+
+<div ng-include="'common/dialogs/control-dialog.html'"></div>
+

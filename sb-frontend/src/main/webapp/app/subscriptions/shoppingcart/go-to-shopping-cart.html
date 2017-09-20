@@ -1,0 +1,36 @@
+<div class="form-group">
+  <label for="inputIMEI">{{'shopping.cart.typeYourTigoMovilCode' | translate }} *</label>
+  <input required valid-number name="tigoPhoneNumber" ng-model="userBill.tigoPhoneNumber" type="text"
+         class="form-control" id="inputIMEI" placeholder="telf" required>
+  <div class="has-warning"><p class="help-block requiredInputPayement"
+                              ng-show="accountForm.tigoPhoneNumber.$error.required">{{'lbl.required'|translate}}</p>
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="inputNAME">{{'device.management.name' | translate }} *</label>
+  <input required name="businessName" ng-model="userBill.businessName" type="text" class="form-control" id="inputNAME"
+         placeholder="{{'device.management.name' | translate }}" required>
+  <div class="has-warning"><span class="help-block requiredInputPayement"
+                                 ng-show="accountForm.businessName.$error.required">{{'lbl.required'|translate}}</span>
+  </div>
+</div>
+
+<div class="form-group">
+  <label for="inputNIT">{{'shopping.cart.typeYourNit' | translate }} *</label>
+  <input name="nit" ng-model="userBill.nit" type="text" class="form-control" id="inputNIT"
+         placeholder="{{'nit' | translate }}" required valid-number>
+  <div class="has-warning"><p class="help-block requiredInputPayement" ng-show="accountForm.nit.$error.required">
+    {{'lbl.required'|translate}}</p></div>
+</div>
+
+<div class="form-group">
+  <label for="inputCarnet">{{'shopping.cart.carnet' | translate }} </label>
+  <input valid-number name="tigoIdCardNumber" ng-model="userBill.tigoIdCardNumber" type="text" class="form-control"
+         id="inputCarnet" placeholder="{{'shopping.cart.carnet' | translate }}">
+  <div class="has-warning"><p style="float: right" class="help-block requiredInputPayement" ng-show="accountValid">
+    {{'shopping.cart.error'|translate}}</p></div>
+</div>
+
+
+

@@ -1,0 +1,136 @@
+<div class="bubble-container">
+  <div ng-show="subscription.showGreeting" class="bubble-devices-placement">
+    <div class="arrow-up" style="margin-bottom: -10px; z-index: 9999999"></div>
+    <div style="clear: both"></div>
+    <div class="bubble-content-container">
+      <div class="content">
+        <div class="bubble-left-icon">
+          <i class="fa fa-plus-circle fa-3x"></i>
+        </div>
+        <div class="bubble-content-text">
+          {{msg}}
+        </div>
+        <div style="clear: both"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="jumbotron center" id="create-subscription-container">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <!--First from-->
+      <!--This button trigger for notification purpose but is hidden to the user-->
+      <button style="display: none" id="notification-trigger-slide"
+              class="btn btn-primary progress-button mrg-b-lg">
+        <span class="content"></span>
+      </button>
+
+      <div ng-hide="firstFormAllreadySend" class="center-subscription-container" style="margin-top: -30px">
+        <h3 class="blue-web-app" style="
+                    font-weight: initial;
+                    border-bottom: solid 1px #03a9f4;
+                    padding-bottom: 5px; text-align: justify">Agregar un dispositivo</h3>
+
+        <form ng-submit="linkingSmartphone(smartphone)" role="form" name="formLinkingSmartphone">
+          <!--Tracker Id input-->
+          <div id="tracker-id" class="form-group"
+               ng-class="{ 'has-warning' : formLinkingSmartphone.tracker_id.$invalid && !formLinkingSmartphone.tracker_id.$pristine }">
+            <label>{{'tracker.id'|translate}}</label>
+            <input style="text-align: center;"
+                   valid-number
+                   type="text"
+                   name="tracker_id"
+                   placeholder="{{'tracker.id.example'|translate}}"
+                   class="form-control"
+                   maxlength="6"
+                   ng-maxlength="6"
+                   ng-minlength="6"
+                   ng-change="validateFields(formLinkingSmartphone)"
+                   id="tracker_id"
+                   required
+                   ng-model="smartphone.generatedId">
+            <span ng-show="formLinkingSmartphone.tracker_id.$invalid && !formLinkingSmartphone.tracker_id.$pristine"
+                  class="help-block">El tracker ID debe tener 6 digitos </span>
+
+            <!-- LINK: what is tracker id? -->
+            <a style="font-size: smaller; margin-bottom: 20px;" data-toggle="modal" class="pull-right"
+               href="#whatIsTrackerId-Modal">¿{{'what.is.tracker.id'|translate}}?</a>
+            <span ng-model="trackerId.message" class="help-block">
+                                <i class="icon-remove-sign"></i>
+                            </span>
+
+          </div>
+          <!--Tracker name input-->
+          <div id="tracker-name" class="form-group"
+               ng-class="{ 'has-warning' : formLinkingSmartphone.tracker_name.$invalid && !formLinkingSmartphone.tracker_name.$pristine }">
+            <label>{{'tracker.name'|translate}}</label>
+            <input required
+                   style="text-align: center;padding-left:20px;"
+                   name="tracker_name"
+                   type="text"
+                   placeholder="{{'tracker.name.example'|translate}}"
+                   ng-maxlength="30"
+                   ng-minlength="3"
+                   class="form-control"
+                   ng-change="validateFields(formLinkingSmartphone)"
+                   id="tracker_name"
+                   ng-model="smartphone.name">
+            <span ng-show="formLinkingSmartphone.tracker_name.$invalid && !formLinkingSmartphone.tracker_name.$pristine"
+                  class="help-block">El nombre del tracker debe tener mínimo 3 digitos</span>
+            <!--<span ng-model="trackerName.message" class="help-block"><i class="icon-remove-sign"></i></span>-->
+          </div>
+
+          <div style="clear: both"></div>
+
+          <!-- SUBMIT BUTTON -->
+          <button type="button" class="btn btn-success"
+                  ng-disabled="formLinkingSmartphone.$invalid"
+                  style="width: 100%; font-size: 1em;"
+                  ng-click="linkingSmartphone(smartphone, formLinkingSmartphone)"
+          >{{'add.device.createDevice' | translate }}
+          </button>
+          <div style="clear: both"></div>
+        </form>
+        <h6 style="font-size: medium; text-align: justify; line-height: 25px">
+          {{ 'add.device.message' | translate}} <a href="#/contact">{{'add.device.link' | translate}}</a>
+        </h6>
+
+      </div>
+    </div>
+    <div class="col-md-4">
+    </div>
+  </div>
+</div>
+<div ng-include="'common/dialogs/send-invitation-mail.html'"></div>
+<div ng-include="'common/dialogs/dialog_what-is-tracker-id.html'"></div>
+
+<script>
+  $(window).ready(function () {
+    // Optimalisation: Store the references outside the event handler:
+    var $window = $(window);
+
+    function checkHeight() {
+      var windowHsize = $window.height();
+      var windowsize = $window.width();
+      if (windowsize >= 992) {
+        $(".center").css("height", windowHsize - 160);
+      }
+    }
+
+    // Execute on load
+    checkHeight();
+    console.log("onloadcheckHeight");
+    // Bind event listener
+    $(window).resize(checkHeight);
+
+    //Show button when plan selected
+    $("input[type='radio']").change(function () {
+      $(".addToShoppingCartButton").css("opacity", "1");
+      $(".addToShoppingCartButton").css("filter", "alpha(opacity=100)");
+      $(".addToShoppingCartButton").css("pointer-events", "visible")
+    });
+  });
+</script>
+
+

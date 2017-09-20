@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="inputNAME"><b>{{'device.management.name' | translate }} *</b></label>
+        <input name="name" ng-model="device.name" type="text" class="form-control" id="inputNAME"
+               placeholder="{{'device.management.name' | translate }}" required>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="inputIMEI"><b>{{'device.management.imei' | translate }} *</b></label>
+        <input name="imei" ng-model="device.imei" type="text" class="form-control" id="inputIMEI"
+               placeholder="{{'device.management.imei' | translate }}" required>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="inputPhoneNumber"><b>{{'gps.device.type'|translate}}</b></label>
+        <select class="form-control" ng-model="device.deviceTypeId" name="option-device-type" ng-required="true"
+                ng-change="updateDataDevice()"
+                ng-options="deviceType.id as deviceType.description for deviceType in deviceTypeList">
+          <option value="" disabled selected>{{'userManagement.lbl.device.type' | translate }}</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="inputPhoneNumber"><b>{{'phoneNumber' | translate}}</b></label>
+        <input id="inputPhoneNumber" class="form-control" type="text" name="phoneNumber" ng-model="device.phoneNumber"
+               ng-pattern="/^\d{8}()*$/" ng-keypress="allowOnlyNumbers($event)"
+               placeholder="{{'device.management.phoneNumber' | translate }}" valid-number="" required>
+        <div class="has-warning"><p class="help-block" ng-show="deviceForm.phoneNumber.$error.pattern"><i
+             class="fa fa-warning fa-fw fa-lg"></i>{{'control.message.valid.national.numbers'|translate}}</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+

@@ -1,0 +1,130 @@
+<!--New Device Modal-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="newDevice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'device.management.add.new' | translate}}</h4>
+            </div>
+            <form role="form" name="deviceForm" ng-submit="registerDevice(deviceForm)">
+                <div class="modal-body">
+                    <div ng-include="'app/devices/forms/device.html'"></div>
+                </div>
+            </form>
+
+            <div class="modal-footer">
+                <button title="{{'lbl.close' | translate}}" type="button" class="btn-sm btn btn-default" data-dismiss="modal">{{'lbl.close' | translate}}</button>
+                <button title="{{'lbl.save'| translate}}" type="button" class="btn-sm btn btn-primary" data-dismiss="modal" ng-click="registerDevice(deviceForm)" ng-disabled="isValidDeviceForm(deviceForm)">{{'lbl.save'| translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Delete Device-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="deleteDevice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'device.management.delete.device'| translate}}</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label>{{'device.management.delete.device.confirmation.message'| translate}} </label>
+                        <span><strong>{{device.name}}</strong></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button title="{{'device.management.delete.device.button'| translate}}"
+                        type="button"
+                        data-dismiss="modal"
+                        ng-click="deleteDeviceForBackend(device)"
+                        class="btn btn-primary">
+                    {{'device.management.delete.device.button'| translate}}
+                </button>
+                <button title="{{'lbl.close' | translate}}"
+                        type="button"
+                        class="btn btn-default"
+                        data-dismiss="modal">
+                    {{'lbl.close' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Delete positions from device-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="deletePositions" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'device.management.delete.positions'| translate}}</h4>
+                <span class="label label-warning"><b>{{'lbl.warning'|translate}} </b> {{'lbl.warning.wait.process'| translate}}</span>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label>{{'device.management.delete.device.confirmation.message.position'| translate}}</label>
+                        <span><strong>{{device.name}}</strong></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button title="{{'device.management.delete.device.button'| translate}}"
+                        type="button"
+                        data-dismiss="modal"
+                        ng-click="deletePositions(device)"
+                        class="btn btn-primary">
+                    {{'device.management.delete.device.button'| translate}}
+                </button>
+                <button title="{{'lbl.close' | translate}}"
+                        type="button"
+                        class="btn btn-default"
+                        data-dismiss="modal">
+                    {{'lbl.close' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Change limit sms -->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="smsControl" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'device.management.delete.device'| translate}}</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+
+                        <label>{{'device.management.delete.device.confirmation.message'| translate}}</label>
+                        <span><strong>{{device.imei}}</strong></span>
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button title="{{'device.management.delete.device.button'| translate}}"
+                        type="button"
+                        data-dismiss="modal"
+                        ng-click="deleteDeviceForBackend(device)"
+                        class="btn btn-primary">
+                    {{'device.management.delete.device.button'| translate}}
+                </button>
+                <button title="{{'lbl.close' | translate}}"
+                        type="button"
+                        class="btn btn-default"
+                        data-dismiss="modal">
+                    {{'lbl.close' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

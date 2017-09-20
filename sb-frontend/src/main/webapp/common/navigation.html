@@ -1,0 +1,237 @@
+<!--<header class="navbar">-->
+  <!--Begin nav bar app -->
+  <nav class="navbar navbar-default navbar-static-top" id="header-navbar">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="fa fa-bars"></span>
+        </button>
+        <a href="/" id="logo" class="navbar-brand">
+          <img src="img/navBarIcons/vaca.svg" alt="" class="normal-logo logo-white"/>
+        </a>
+
+        <div style="float: right;">
+          <div ng-if="hasRole('shopping-cart')" class="special-buttons-left">
+            <a href="#/shopping-cart">
+              <div class="left-navbar-icons">
+                <div class="carrito-circle" style="text-indent: 1px;
+                                            line-height: 20px;
+                                        margin-right: 100px !important; margin-top: 5px;">
+                  {{shoppingCart.NumOfItems}}
+                </div>
+                <img style="width: 35px;
+                                margin-top: 2px;" src="img/navBarIcons/carrito.svg" alt=""/>
+              </div>
+              <div style="clear: both; height: 0px"></div>
+
+            </a>
+          </div>
+
+
+          <div class="special-buttons-left" ng-if="hasRole('add-device')">
+            <a href="#/add-device">
+              <div class="left-navbar-icons">
+                <div class="carrito-circle"
+                     style="text-indent: 2px; line-height: 20px ;margin-right: 60px !important;margin-top: 4px; margin-top: 5px;">
+                  +
+                </div>
+                <img src="img/navBarIcons/addDevice.svg" style=" width: 40px; margin-top: 2px;" alt=""/>
+              </div>
+              <div style="clear: both; height: 0px"></div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <!-- Begin menus of app -->
+        <ul class="nav navbar-nav nav-pills nav-stacked">
+          <!-- Begin menu current position -->
+          <li ng-class="getClass('/current-position')" ng-if="hasRole('current-position')">
+            <a href="#/current-position">
+              <i class="fa fa-location-arrow"></i>
+              {{ 'currentPosition' | translate }}
+            </a>
+          </li><!--End current position-->
+
+          <!-- Begin menu history -->
+          <li ng-class="getClass('/history')" ng-if="hasRole('history')">
+            <a href="#/history">
+              <i class="fa fa-history"></i>
+              {{ 'history' | translate }}
+            </a>
+          </li><!--End menu history-->
+
+          <!-- Begin menu reports -->
+          <li ng-class="getClass('/reports')" ng-if="hasRole('reports')">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              <i class="fa fa-file-text-o"></i>
+              {{ 'reports' | translate }}
+              <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li ng-class="getClass('/reports')" ng-if="hasRole('reports')">
+                <a href="#/reports">
+                  <i class="fa fa-file-text-o"></i>
+                  {{ 'report.menu.simple.report' | translate }}
+                </a>
+              </li>
+              <li ng-class="getClass('/detailed-report')" ng-if="hasRole('detailed-report')">
+                <a href="#/detailed-report">
+                  <i class="fa fa-file-text"></i>
+                  {{ 'report.menu.detailed.report' | translate }}
+                </a>
+              </li>
+            </ul>
+          </li><!--End menu reports-->
+
+          <!-- Begin menu geo fences-->
+          <li ng-class="getClass('/control')" ng-if="hasRole('control')">
+            <a href="#/control">
+              <i class="fa fa-map-marker"></i>
+              {{ 'geoFence' | translate }}
+            </a>
+          </li><!--End menu geo fence-->
+
+          <!-- Begin menu device configuration -->
+          <li ng-class="getClass('/device-config') || getClass('/user-management')"
+              ng-if="(hasRole('device-config') || hasRole('user-management'))">
+            <a href="#/user-management">
+              <i class="fa fa-users"></i>
+              {{ 'users' | translate }}
+            </a>
+
+          </li><!--End menu device configuration-->
+
+          <!-- Begin subscription management -->
+          <li ng-class="getClass('/subscriptions-management') || getClass('/subscriptions-management')"
+              ng-if="(hasRole('device-config') || hasRole('subscriptions-management'))">
+            <a href="#/subscriptions-management">
+              <i class="fa fa-mobile fa-3x"></i>
+              {{ 'devices' | translate }}
+            </a>
+
+          </li><!--End subscription management-->
+
+
+        </ul><!--End menus app-->
+
+        <!--RIGHT SIDE OF NAV BAR-->
+        <ul class="nav navbar-nav navbar-right nav-pills nav-stacked">
+          <li ng-class="getClass('/device-management') || getClass('/account-management')"
+              ng-if="hasRole('device-management') || hasRole('account-management') || hasRole('subscription')">
+
+            <!--ADD DEVICE BTN-->
+          <li class="special-buttons" ng-class="getClass('/control') " ng-if="hasRole('add-device')">
+            <a href="#/add-device">
+              <div class="left-navbar-icons">
+                <div class="carrito-circle">+</div>
+                <img src="img/navBarIcons/addDevice.svg" alt=""/>
+              </div>
+              <div style="clear: both; height: 0px"></div>
+            </a>
+          </li>
+
+          <!--SHOPPING CART BTN-->
+          <li ng-if="hasRole('shopping-cart')" class="special-buttons">
+            <a href="#/shopping-cart">
+              <div class="left-navbar-icons">
+
+                <div class="carrito-circle">{{shoppingCart.NumOfItems}}</div>
+                <img src="img/navBarIcons/carrito.svg" alt=""/>
+              </div>
+              <div style="clear: both; height: 0px"></div>
+
+            </a>
+          </li>
+
+          <li class="item" ng-class="getClass('/devices-status')" ng-if="hasRole('devices-status')">
+            <a href="#/devices-status">
+              <i class="fa fa-dot-circle-o"></i>
+              {{ 'devices.status' | translate }}
+            </a>
+          </li>
+          <li class="item" ng-if="hasRole('transactions')">
+            <a href="#/transactions">
+              <i class="fa fa-money" aria-hidden="true"></i>
+              {{ 'lbl.transactions' | translate }}
+            </a>
+          </li>
+          <li class="item" ng-if="hasRole('subscription')"
+              ng-class="getClass('/subscription')">
+            <a href="#/subscription">
+              <i class="fa fa-ticket" aria-hidden="true"></i>
+              {{ 'subscription.label.title' | translate }}
+            </a>
+          </li>
+          <li class="item" ng-if="hasRole('account-management')"
+              ng-class="getClass('/account-management')">
+            <a href="#/account-management">
+              <i class="fa fa-users" aria-hidden="true"></i>
+              {{ 'accountManagement.title' | translate }}
+            </a>
+          </li>
+          <li class="item" ng-if="hasRole('device-management')"
+              ng-class="getClass('/device-management')">
+            <a href="#/device-management">
+              <i class="fa fa-tablet"></i>
+              {{ 'deviceManagement.title' | translate }}
+            </a>
+          </li>
+
+          <!--<li ng-class="getClass('/device-management') || getClass('/company-management')"-->
+              <!--ng-if="hasRole('device-management') || hasRole('company-management') || hasRole('subscription')">-->
+            <!--<a class="dropdown-toggle" data-toggle="dropdown">-->
+              <!--<i class="fa fa-star"></i>-->
+              <!--{{ 'administration' | translate }}-->
+              <!--<b class="caret"></b>-->
+            <!--</a>-->
+            <!--<ul class="dropdown-menu dropdown-menu-right">-->
+              <!---->
+            <!--</ul>-->
+          <!--</li>-->
+
+
+          <li class="dropdown profile-dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">
+              <span><i class="fa fa-user"></i> {{currentUser.name}}</span> <b class="caret"></b>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right">
+              <li>
+                <a data-toggle="modal"
+                   data-target="#modalChangePassword"
+                   href="">
+                  <i class="fa fa-key"></i>
+                  {{'lbl.changePassword'|translate}}
+                </a>
+              </li>
+              <li class="item" ng-if="hasRole('state-account') || hasRole('user-management')"
+                  ng-class="getClass('/stateAccount')">
+                <a href="#/state-account">
+                  <i class="fa fa-tasks"></i>
+                  {{ 'state.account' | translate }}
+                </a>
+              </li>
+              <li>
+                <a ng-click="logout()">
+                  <i class="fa fa-power-off"></i>
+                  {{'lbl.logOut'|translate}}
+                </a>
+              </li>
+
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+
+  </nav><!--End nav bar app -->
+
+  <!--Begin form change password (include)-->
+<!--</header>-->
+<div ng-include="'common/dialogs/change-password-dialog.html'"></div><!--End form change password (include)-->

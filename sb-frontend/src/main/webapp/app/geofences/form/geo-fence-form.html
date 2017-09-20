@@ -1,0 +1,183 @@
+<!-- Active fence Switch ON\OFF -->
+<div class="form-group">
+  <a title="{{'control.fence.undo' | translate}}" ng-click="loadCurrentFence(fence, fence.deviceId)"
+     id="reload-{{fence.id}}" class='reload-{{fence.id}} reload' style="float:right ">
+    <i class="fa fa-share"></i></a>
+
+  <div id="status-{{fence.id}}" class="onoffswitch onoffswitch-success">
+    <input type="checkbox" class="onoffswitch-checkbox" id="myonoffswitch-{{fence.id}}" ng-model="fence.status">
+    <label class="onoffswitch-label" for="myonoffswitch-{{fence.id}}">
+      <div class="onoffswitch-inner"></div>
+      <div class="onoffswitch-switch"></div>
+    </label>
+  </div>
+</div>
+
+<!-- Fence name -->
+<div class="form-group">
+  <label for="name-{{fence.id}}"><b>{{'fence.name' | translate}}*</b></label>
+  <input id="name-{{fence.id}}" name="name" ng-model="fence.name" type="text" class="form-control"
+         placeholder="{{ 'control.fence.name' | translate }}" ng-required="true">
+</div>
+
+<!-- Alert where ?-->
+<div class="form-group">
+  <label><b>{{ 'control.fence.alertOn' | translate }}:</b></label><br>
+  <div class="checkbox-nice checkbox-inline">
+    <input id="enteringZone-{{fence.id}}" type="checkbox" ng-model="fence.enteringZone"/>
+    <label for="enteringZone-{{fence.id}}">{{ 'control.fence.enteringZone' | translate }}</label>
+  </div>
+  <div class="checkbox-nice checkbox-inline">
+    <input id="leavingZone-{{fence.id}}" type="checkbox" ng-model="fence.leavingZone"/>
+    <label for="leavingZone-{{fence.id}}">{{ 'control.fence.leavingZone' | translate }}</label>
+  </div>
+</div>
+<hr>
+
+<!-- Day active fence -->
+<div class="form-group active-day">
+  <label><b>{{ 'control.fence.activeDays.and.times' | translate }}</b></label><br/>
+  <div class="checkbox-nice">
+    <input type="checkbox" id="checkall-{{fence.id}}" class="cb {{fence.id}}" ng-model="fence.alldays"
+           ng-change="onMasterChange()"/>
+    <label for="checkall-{{fence.id}}">{{ 'control.fence.allDays' | translate }}</label>
+  </div>
+
+  <div ng-hide="fence.alldays">
+    <!-- Monday checkbox -->
+    <div class="checkbox-nice checkbox-inline">
+      <input type="checkbox" id="monday-{{fence.id}}" class='{{fence.id}} ca' ng-model="fence.monday"/>
+      <label for="monday-{{fence.id}}">{{ 'lbl.monday.abbr' | translate }}</label>
+    </div>
+    <!-- Tuesday checkbox -->
+    <div class="checkbox-nice checkbox-inline">
+      <input type="checkbox" id="tuesday-{{fence.id}}" class='{{fence.id}} ca' ng-model="fence.tuesday"/>
+      <label for="tuesday-{{fence.id}}">{{ 'lbl.tuesday.abbr' | translate }}</label>
+    </div>
+    <!-- Wednesday checkbox -->
+    <div class="checkbox-nice checkbox-inline">
+      <input type="checkbox" id="wednesday-{{fence.id}}" class='{{fence.id}} ca' ng-model="fence.wednesday"/>
+      <label for="wednesday-{{fence.id}}">{{ 'lbl.wednesday.abbr' | translate }}</label>
+    </div>
+    <!-- Thursday checkbox -->
+    <div class="checkbox-nice checkbox-inline">
+      <input type="checkbox" id="thursday-{{fence.id}}" class='{{fence.id}} ca' ng-model="fence.thursday"/>
+      <label for="thursday-{{fence.id}}">{{ 'lbl.thursday.abbr' | translate }}</label>
+    </div>
+    <!-- Friday checkbox -->
+    <div class="checkbox-nice checkbox-inline">
+      <input type="checkbox" id="friday-{{fence.id}}" class='{{fence.id}} ca' ng-model="fence.friday"/>
+      <label for="friday-{{fence.id}}">{{ 'lbl.friday.abbr' | translate }}</label>
+    </div>
+    <!-- Saturday checkbox -->
+    <div class="checkbox-nice checkbox-inline">
+      <input type="checkbox" id="saturday-{{fence.id}}" class='{{fence.id}} ca' ng-model="fence.saturday"/>
+      <label for="saturday-{{fence.id}}">{{ 'lbl.saturday.abbr' | translate }}</label>
+    </div>
+    <!-- Sunday checkbox -->
+    <div class="checkbox-nice checkbox-inline">
+      <input type="checkbox" id="sunday-{{fence.id}}" class='{{fence.id}} ca' ng-model="fence.sunday"/>
+      <label for="sunday-{{fence.id}}">{{ 'lbl.sunday.abbr' | translate }}</label>
+    </div>
+  </div>
+</div>
+
+<!-- Hour active fence -->
+<div class="form-group">
+  <div class="checkbox-nice">
+    <input type="checkbox" id="entireDay-{{fence.id}}" ng-model="fence.entireDay"/>
+    <label for="entireDay-{{fence.id}}">{{ 'control.fence.entireDay' | translate }}</label>
+  </div>
+  <div id="activeTimes-{{fence.id}}" ng-hide="fence.entireDay">
+    <div class="input-group input-append bootstrap-timepicker col-lg-4 pull-left">
+      <input type="text" class="form-control timepicker" id="startTime-{{fence.id}}" ng-model="fence.startTime"
+             ng-required="!fence.entireDay">
+      <span class="add-on input-group-addon"><i class="fa fa-clock-o"></i></span>
+    </div>
+
+    <div class="input-group input-append bootstrap-timepicker col-lg-4 pull-right">
+      <input type="text" class="form-control timepicker" id="endTime-{{fence.id}}" ng-model="fence.endTime"
+             ng-required="!fence.entireDay">
+      <span class="add-on input-group-addon"><i class="fa fa-clock-o"></i></span>
+    </div>
+  </div>
+</div>
+<hr>
+
+<!-- Alert by EMAIl textarea -->
+<div class="form-group">
+  <label for="emailAlerts-{{fence.id}}">
+    <b>{{ 'alert.to.emails.and.sms' | translate}}</b>
+  </label>
+  <textarea id="emailAlerts-{{fence.id}}" ng-trim="true" name="emails" ng-model="fence.emails"
+            ng-pattern="/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+([,.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+)*$/"
+            class="form-control" placeholder="{{'emails.example'| translate }}" ng-keypress="blockSpace($event)"
+            ng-paste="blockSpace($event)" rows="3">
+    </textarea>
+  <div class="has-warning">
+    <p class="help-block" ng-show="fenceForm.emails.$error.pattern"><i class="fa fa-warning fa-fw fa-lg"></i><strong>{{'control.msg.valid.mail'|translate}}</strong>
+    </p>
+  </div>
+</div>
+<!-- Alert by SMS textarea -->
+<div class="form-group">
+  <textarea id="smsAlerts-{{fence.id}}" name="phoneNumbers" ng-disabled="currentUser.companyTest"
+            ng-model="fence.cellphones" placeholder="{{'phones.example'| translate }}" class="form-control"
+            ng-pattern="/^\d{8}(,\d{8})*$/" valid-number rows="3"></textarea>
+  <div class="has-warning">
+    <p class="help-block " ng-show="fenceForm.phoneNumbers.$error.pattern"><i class="fa fa-warning fa-fw fa-lg"></i>{{'control.message.valid.national.numbers'|translate}}<br>{{'control.msg.valid.phone.number.coma'|translate}}
+    </p>
+  </div>
+</div>
+<hr>
+
+<!-- Buttons Save and Remove-->
+<div class="col-lg-2" style="width:100px">
+  <a title="{{'lbl.save' | translate }}" ng-class="{'linkDisabled':!fenceForm.$valid}"
+     ng-disable="validMail && validNumber" ng-click="registerFence(fence, fenceForm)" style="float:left">
+    <i class="fa fa-save fa-2x"></i></a>
+  <a title="{{'lbl.delete' | translate }}" data-toggle="modal" data-target="#modalDeleteFence"
+     ng-click="prepareEditFence(fence)" style="float:right"><i class="fa fa-trash-o fa-2x"></i>
+  </a>
+  <br style="clear:both;">
+</div>
+<br>
+
+<script>
+  $(function ($) {
+    //Check uncheck all days of the week
+    $(".cb").change(function () {
+      var id = this.className.split(' ')[1];
+      if ($("." + id + ":checked").length == 8) {
+        $(this).prop("checked", true);
+        return;
+      }
+      id != '' ? $("." + id).prop('checked', $(this).prop("checked")) : $(".ca").prop('checked', $(this).prop("checked"));
+    });
+
+    //Check alldays checkbox if user select all days separetely
+    $(".ca").change(function () {
+      var id = this.className.split(' ')[0];
+      $(".ca" + "." + id + ":checked").length == 7 ? $(".cb" + "." + id).prop('checked', true) : $(".cb" + "." + id).prop('checked', false);
+
+    });
+
+    //Hide the undo button
+    $(".reload").on('click', function () {
+      var classNameReload = this.className.split(' ')[0];
+      $('.' + classNameReload).css('visibility', 'hidden');
+    });
+
+    //timepicker
+    $('.timepicker').timepicker({
+      minuteStep: 1,
+      showSeconds: false,
+      showMeridian: false,
+      disableFocus: false,
+      showWidget: true
+    }).focus(function () {
+      $(this).next().trigger('click');
+    });
+  });
+</script>
+

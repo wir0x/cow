@@ -1,0 +1,1 @@
+ALTER TABLE fence ADD position_pointer LONG NULL;

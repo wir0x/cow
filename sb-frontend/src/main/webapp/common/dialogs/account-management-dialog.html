@@ -1,0 +1,183 @@
+<!--New Account Modal-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false"  id="newAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form role="form" name="accountForm" >
+            <div class="modal-header">
+                <button type="button" class="close"  ng-click="cleanForm(accountForm)" data-dismiss="modal" aria-hidden="true" >&times;</button>
+                <h4 class="modal-title">{{'title.new.account' | translate}}</h4>
+            </div>
+            <!--<form role="form" name="accountForm">-->
+                <div class="modal-body">
+                    <div ng-if="hasRole('account-management')" ng-include="'app/accounts/account.html'"></div>
+                    <div ng-if="!hasRole('account-management')" ng-include="'app/accounts/account-admin.html'"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" title="{{'lbl.close' | translate}}" class="btn btn-sm btn-default" ng-click="cleanForm(accountForm)" data-dismiss="modal">
+                        {{'lbl.close' | translate}}</button>
+                    <button ng-if="hasRole('account-management')" type="submit" title="{{'lbl.save'| translate}}" class="btn btn-sm btn-primary" ng-click="registerNewAccount()" ng-disabled="isValidAccountForm(accountForm)" data-dismiss="modal">
+                      {{'lbl.save'| translate}}</button>
+                    <button ng-if="!hasRole('account-management')" type="submit" title="{{'lbl.save'| translate}}" id="registerBtn" class="btn btn-sm btn-primary" ng-click="register(accountForm)" >
+                        {{'lbl.register'| translate}}</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!--Edit account Modal-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="editAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'title.new.account' | translate}}</h4>
+            </div>
+
+            <form role="form" name="accountForm2">
+                <div class="modal-body">
+                    <div ng-if="hasRole('account-management')" ng-include="'app/accounts/account.html'"></div>
+                    <div ng-if="!hasRole('account-management')" ng-include="'app/accounts/account-admin.html'"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" title="{{'lbl.close' | translate}}" class="btn btn-sm btn-default" data-dismiss="modal">{{'lbl.close' | translate}}</button>
+                    <button type="button" title="{{'lbl.save'| translate}}" class="btn btn-sm btn-success" data-dismiss="modal" ng-click="updateAccount(form)">{{'lbl.save'| translate}}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Change Password-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="changePasswordAccountManagement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" title="" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'userManagement.user.changePassword' | translate }}</h4>
+            </div>
+            <form role="form" name="changePasswordForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="newPassword">{{'userManagement.user.passwordNew' | translate }}</label>
+                                <input type="password" class="form-control" id="newPassword" ng-model="user.passwordNew" name="password" placeholder="{{'userManagement.user.passwordNew' | translate }}" ng-minlength="3" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="passwordConfirm">{{'userManagement.user.passwordConfirm' | translate }}</label>
+                                <input type="password" class="form-control" id="passwordConfirm" name="passwordConfirm" ng-model="user.passwordConfirm" placeholder="{{'userManagement.user.passwordConfirm' | translate }}" ng-minlength="3" required>
+                                <div class="has-warning"><p class="help-block" ng-show="changePasswordForm.passwordConfirm.$dirty && !arePasswordsEquals(changePasswordForm)">{{'validator.confirm.password'| translate }}</p></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" title="{{'lbl.close' | translate }}" class="btn-sm btn btn-default" data-dismiss="modal">{{'lbl.close' | translate }}</button>
+                    <button type="button" class="btn-sm btn btn-primary" title="{{'lbl.save' | translate }}" data-dismiss="modal" ng-disabled="isValid(changePasswordForm)" ng-click="changePasswordUserAccountManagement(user)">{{'lbl.save' | translate }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Add device to Account-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="addDeviceAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Add device to account</h4>
+            </div>
+            <form role="form" name="form">
+                <div class="modal-body">
+
+                    <h4>{{'free.devices'|translate}}</h4>
+
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <select class="form-control" ng-model="device" name="select-add" ng-options="device as device.name for device in freeDevices">
+                                <option value="" disabled selected>{{ 'userManagement.user.devices' | translate }}</option>
+                            </select>
+                        </div>
+
+                        <div class="btn-group">
+                            <button class="btn btn-success" title="{{'account.management.add.device.title'|translate}}" ng-disabled="freeDevices.length == 0" ng-click="addDevice(device)">
+                                {{'account.management.add.device.title'|translate}}
+                            </button>
+                        </div>
+                        <div class="form-group" ng-show="loading">
+                            <i class="fa fa-spinner fa-pulse fa-2x fa-fw margin-bottom"></i>
+                        </div>
+                    </div>
+
+                    <h4 class="pull-left">{{'account' | translate}} - {{account.name}}</h4>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="main-box clearfix">
+                                <div class="table-responsive">
+                                    <table id="table-example" class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>{{'device.management.imei' | translate}}</th>
+                                            <th>{{'account.management.name' | translate}}</th>
+                                            <th>{{'account.management.action.device.title'|translate}}</th>
+                                        </tr>
+                                        </thead>
+
+                                        <tbody ng-repeat="device in devicesAccount | filter:searchText">
+                                        <tr>
+                                            <td>{{device.imei}}</td>
+                                            <td>{{device.name}}</td>
+                                            <td style="width: 15%;">
+                                                <a data-toggle="modal" title="{{'account.management.remove.device.title'|translate}}" data-target="" ng-click="removeDevice(device)" class="table-link danger">
+                                                   <span class="fa-stack"><i class="fa fa-square fa-stack-2x"></i><i class="fa fa-times fa-stack-1x fa-inverse"></i></span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-sm btn btn-default"  title="{{'lbl.close' | translate }}" data-dismiss="modal">{{'lbl.close' | translate }}</button>
+                    <button type="button" class="btn-sm btn btn-primary" title="{{'lbl.save' | translate }}" data-dismiss="modal" ng-click="saveDeviceAssigned(account)">{{'lbl.save' | translate }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Delete Account-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false"  id="deleteAccount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{'account.management.remove.account.title'| translate}}</h4>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <span><strong>{{account.nameAccount}}</strong></span><br/>
+                        <label>{{'account.management.delete.account.confirmation.message'| translate}}<br/>{{'account.management.delete.account.confirmation.message.two'| translate}}</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button title="{{'lbl.close' | translate}}" type="button" class="btn-sm btn btn-default" data-dismiss="modal">{{'lbl.close' | translate}}</button>
+                <button title="{{'device.management.delete.device.button'| translate}}" type="button" data-dismiss="modal" ng-click="deleteAccount(account)" class="btn-sm btn btn-primary">{{'device.management.delete.device.button'| translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

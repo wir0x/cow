@@ -1,0 +1,122 @@
+<div class="row">
+  <div class="jumbotron center" id="shopping-cart-container">
+    <div class="main-box-body clearfix ">
+      <div style="margin: 0 auto; width: 80%;">
+
+        <!--This button trigger for notification purpose but is hidden to the user-->
+        <h4><i class="fa fa-cart-plus fa-4x blue-web-app"> </i>
+          <span class="blue-web-app" style="font-size: 1.5em; font-weight: 600; padding: 20px;">{{'shopping.cart.title' | translate}}</span>
+        </h4>
+        <button style="display: none" id="notification-trigger-slide"
+                class="btn btn-primary progress-button mrg-b-lg">
+          <span class="content"></span>
+        </button>
+        <br>
+        <br>
+        <div ng-show="shoppingCart.length == 0">
+          <div style="width: 100%">
+            <h5 style="text-align: right;" class="blue-web-app">
+              <span style="font-weight: bold; border: none"> {{'shopping.cart.empty.message' | translate}} </span>
+            </h5>
+
+            <div style="clear: both"></div>
+          </div>
+          <a href="#/subscriptions-management"
+             style="float: right" id="button-empty-shopping-cart"
+             class="btn btn-primary btn-lg pull-right btn-link-special">
+            {{'shopping.cart.empty.btn' | translate }}
+          </a>
+        </div>
+        <div ng-show="shoppingCart.length > 0">
+          <table id="table-shopping-cart" class="table table-hover">
+            <thead>
+            <tr>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th style="text-align: right">{{'shopping.cart.subscription.row' | translate}}</th>
+              <th style="text-align: right">{{'shopping.cart.payment.row' | translate}}</th>
+            </tr>
+            </thead>
+            <tbody class="thin-border-row" ng-repeat="item in shoppingCart">
+            <tr style="border-top: none;">
+              <td style="border-top: none; text-align: center;">
+                <div style="cursor: pointer"
+                     ng-click="deleteItem($index , item.id, item.device.name)" style="
+                                        border-radius: 2px;
+                                        width: 20px;
+                                        height: 20px;">
+                  <span style="font-weight: bold; font-size: .6em;">X</span>
+                </div>
+              </td>
+              <td style="border-top: none;">
+                <i class="fa {{item.device.icon}} " style="color: #{{item.device.color}} "/>
+              </td>
+              <td style="border-top: none;">
+                {{item.device.name}}
+              </td>
+              <td style="border-top: none;">
+                <select class="form-control shopping-cart-select"
+                        ng-model="item.servicePlan.price"
+                        ng-options="sp.price as sp.name for sp in servicePlans"
+                        ng-change="calculateTotal(item.servicePlan.id)">
+                </select>
+              </td>
+              <td style="border-top: none; text-align: right;">
+                               <span style="font-weight: bold; border: none">
+                                    <!--{{getPrice(item.servicePlanId)}}-->
+                                    {{item.servicePlan.price}}
+                               </span>
+
+                {{'shopping.cart.currency' | translate}}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <div>
+            <h3 class="shopping-cart-titles">
+              {{'shopping.cart.totalDevice' | translate }}
+              <span style="font-weight: bold; border: none"> {{shoppingCart.length}} </span>
+              <br>
+              {{'shopping.cart.totalMonth' | translate }}
+              <span style="font-weight: bold; border: none">
+                                {{totalMonth}} </span>
+              <br>
+            </h3>
+
+            <h2 style="text-align: right;">
+              {{'shopping.cart.totalToPay' | translate }}
+              <span style="font-weight: bold; border: none"> {{totalToPay}} </span>
+              {{'shopping.cart.currency' | translate}}
+            </h2>
+
+            <div style="clear: both"></div>
+          </div>
+          <a ng-click="openModalTm()"
+             style="float: right" id="button-go-to-shopping-cart"
+             class="btn btn-primary btn-lg pull-right btn-link-special">
+            {{'shopping.cart.proceedToPayment' | translate }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div ng-include="'common/dialogs/tigo-money-payment-dialog.html'"></div>
+<script>
+  $(window).ready(function () {
+    var $window = $(window);
+
+    function checkHeight() {
+      var windowHsize = $window.height();
+      var windowsize = $window.width();
+      if (windowsize >= 992) {
+        $(".center").css("height", windowHsize - 160);
+      }
+    }
+
+    checkHeight();
+    $(window).resize(checkHeight);
+  });
+</script>

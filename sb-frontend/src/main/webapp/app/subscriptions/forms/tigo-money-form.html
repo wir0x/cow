@@ -1,0 +1,66 @@
+<div ng-if=" location.path() != '/state-account' ">
+  <div ng-show="tMspinner.WaitingForPayment" class="shopping-cart-loader-container">
+    <div class="modal-header tm">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="tm-loader"><img height="60px" width="60px" src="img/loader.gif" alt=""/></div>
+    <div style="display: block; margin-left: auto; margin-right: auto; margin-top: 10px; width: 260px; text-align: center">
+      <label>{{'subscription.waiting.for.payment' | translate}}</label></div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="col-md-6">
+      <!-- Begin Cellphone number tigo money  -->
+      <div class="form-group">
+        <label for="tigo-phone-number"><b>{{'shopping.cart.typeYourTigoMovilCode' | translate }} *</b></label>
+        <input id="tigo-phone-number" type="text" name="tigoPhoneNumber" ng-model="userBill.phoneNumber" valid-number
+               ng-minlength="8" maxlength="8" class="form-control" placeholder="telf." required>
+      </div><!-- End cell phone number tigo money -->
+
+    </div>
+    <div class="col-md-6">
+      <!-- Begin CI -->
+      <div class="form-group">
+        <label for="ci"><b>{{'shopping.cart.carnet' | translate }} *</b></label>
+        <input id="ci" type="text" name="documentNumber" class="form-control" valid-number
+               ng-model="userBill.documentNumber" maxlength="15" ng-minlength="5"
+               placeholder="{{'shopping.cart.carnet' | translate }}" required>
+      </div><!--End CI-->
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="col-md-6">
+      <!-- Begin Business name-->
+      <div class="form-group">
+        <label for="social-reason"><b>{{'device.management.name' | translate }} </b></label>
+        <input id="social-reason" name="businessName" type="text" class="form-control" ng-model="userBill.socialReason"
+               placeholder="{{'device.management.name' | translate }}">
+        <span class="alert-warning requiredInputPayement"
+              ng-show="accountForm.businessName.$invalid && !accountForm.businessName.$pristine">{{'lbl.required'|translate}}</span>
+      </div><!--End Business name-->
+    </div>
+    <div class="col-md-6">
+      <!--Begin Nit-->
+      <div class="form-group">
+        <label for="nit"><b>{{'shopping.cart.typeYourNit' | translate }} </b></label>
+        <input id="nit" type="text" name="nit" class="form-control" valid-number ng-model="userBill.nit"
+               placeholder="{{'nit' | translate }}">
+      </div><!--End Nit-->
+    </div>
+  </div>
+</div>
+
+<div ng-if="!fromStateAccount" style="float: right;">
+  <div class="checkbox-nice checkbox-inline">
+    <input id="pay_status" type="checkbox" class='checkbox style-2 pull-right' ng-model="userBill.saveBillsData"/>
+    <label for="pay_status" class="pull-left"></label>
+  </div>
+</div>
+
+<div ng-if="!fromStateAccount" class="cb-view-container"><span style="word-spacing: -1px">{{'shopping.cart.save.bills.data'|translate }}</span>
+</div>
+<div style="clear: both"></div>
+
+

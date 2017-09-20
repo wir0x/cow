@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="main-box clearfix">
+      <header class="main-box-header clearfix">
+        <h2 class="pull-left">{{'state.account.device'|translate}}</h2>
+
+        <div class="filter-block pull-right">
+          <div class="form-group pull-left">
+            <input type="text" ng-model="searchText" class="form-control"
+                   placeholder="{{'searchPlaceholder'|translate}}">
+            <i class="fa fa-search search-icon"></i>
+          </div>
+
+        </div>
+      </header>
+      <div class="main-box-body clearfix">
+        <div class="panel-group accordion" id="accordion-device">
+          <div ng-repeat="stateAccount in stateAccounts | filter:searchText" class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">
+                <a class="accordion-toggle collapsed" data-toggle="collapse"
+                   data-parent="#accordion" href="#collapse-{{$index}}">
+                  <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-6">
+                      {{ stateAccount.deviceName}}
+                    </div>
+
+                    <div class="col-md-3 col-sm-6 col-xs-6">
+                      {{'lbl.to'|translate}}
+                      {{(stateAccount.endSubscription)}}
+                    </div>
+                  </div>
+                </a>
+              </h4>
+            </div>
+            <div id="collapse-{{$index}}" class="panel-collapse collapse" style="height: 2px;">
+              <header class="main-box-header clearfix">
+                <div class="panel-group accordion" id="accordion-plan">
+                  <div ng-repeat="subscription in stateAccount.subscriptionDtoList"
+                       class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a class="accordion-toggle collapsed" data-toggle="collapse"
+                           data-parent="#accordion" href="#collapse-plan-{{subscription.id}}">
+                          <div class="row">
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                              {{'lbl.plan'|translate}}
+                              {{subscription.servicePlanName}}
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                              {{'lbl.from'|translate}}
+                              {{(subscription.startDate)}}
+                            </div>
+                            <div class="col-md-3 col-sm-3 col-xs-6">
+                              {{'lbl.to'|translate}}
+                              {{(subscription.endDate)}}
+                            </div>
+                          </div>
+                        </a>
+                      </h4>
+                    </div>
+                    <div id="collapse-plan-{{subscription.id}}" class="panel-collapse collapse"
+                         style="height: 2px;">
+                      <div class="panel-body">
+                        <div class="table-responsive">
+                          <table id="table-subscription" class="table table-hover">
+                            <thead>
+                            <tr>
+                              <th>{{'lbl.actual.month' | translate}}</th>
+                              <th>{{'lbl.used.sms' | translate}}</th>
+                              <th>{{'lbl.remaining.sms' | translate}}</th>
+                              <th>{{'lbl.sms.for.month' | translate}}</th>
+                            </tr>
+                            </thead>
+                            <tbody ng-repeat="smsControl in subscription.smsControlDtoList ">
+                            <td>{{smsControl.actualMonth}}</td>
+                            <td>{{smsControl.usedSms}}</td>
+                            <td>{{smsControl.remainingSms}}</td>
+                            <td>{{smsControl.smsForMonth}}</td>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </header>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-include="'common/dialogs/subscription-dialog.html'"></div>

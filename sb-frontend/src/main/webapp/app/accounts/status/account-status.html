@@ -1,0 +1,101 @@
+<div class="row">
+  <div class="col-lg-12">
+    <!--<h4 class="pull-left">{{billStatus.nameAccount}}</h4>-->
+    <div class="main-box clearfix">
+      <div class="alert alert-info account-header">
+        <i class="fa fa-user fa-fw fa-lg"></i><strong>{{'userManagement.user.username' | translate}}</strong>
+        {{userBill.nameAccount}}
+      </div>
+
+      <button style="display: none" id="notification-trigger-slide" class="btn btn-primary progress-button mrg-b-lg">
+        <span class="content"></span>
+      </button>
+
+      <div class="col-xs-6 responsive-block" style="padding: 40px">
+        <h3 class="pull-left" style="width: 100%"><span>{{'state.account.bill'|translate}}</span></h3>
+        <div style="clear: both;"></div>
+        </br>
+        <form id="accountForm" role="form" name="accountForm" class="my-form">
+          <div ng-include="'app/subscriptions/forms/tigo-money-form.html'"></div>
+          <button ng-class="{'pendingButton' : !accountForm.$dirty}" type="button" title="{{'lbl.save'| translate}}"
+                  class="btn btn-primary pull-right" data-dismissible="false" ng-click="saveNewBillsData()">
+            {{'lbl.save'| translate}}
+          </button>
+        </form>
+      </div>
+
+      <div class="col-xs-6 responsive-block-sub" style="padding: 40px">
+        <h3 class="pull-left" style="width: 100%"><span>{{'state.account.device'|translate}}</span></h3>
+        <div style="clear: both;"></div>
+        </br>
+        <div style="margin-top: 10px">
+          <label style="width: 200px">{{'lbl.number.devices'|translate}}: <span style="float: right; font-weight: bold">{{subscriptions.length}}</span></label></br>
+          <label style="width: 200px">{{'subscription.devicesActives'|translate}}: <span
+               style="float: right; font-weight: bold">{{subscriptionsActives.length}}</span></label></br>
+          <label style="width: 200px">{{'subscription.pendingDevices'|translate}}: <span
+               style="float: right; font-weight: bold">{{subscriptionsPending.length}}</span></label></br>
+          <label style="width: 200px">{{'subscription.inactiveDevices'|translate}}: <span
+               style="float: right; font-weight: bold">{{subscriptionsInactives.length}}</span></label></br>
+        </div>
+      </div>
+      <div style="clear:both;"></div>
+
+      <div ng-if="paymentHistorial.length > 0 " class="col-xs-12 responsive-block"
+           style="padding: 40px; margin-top: -50px">
+        <h3 class="pull-left" style="width: 100%"><span>{{'state.account.payment.historial' | translate}}</span></h3>
+        <div>
+          <table id="table-shopping-" class="table table-hover">
+            <!--lbl.date-->
+            <thead>
+            <tr>
+              <th>{{'configDevice.device.namePlaceholder'| translate}}</th>
+              <th>{{'lbl.date' | translate}}</th>
+              <th>{{'lbl.price' | translate}}</th>
+              <th>{{'pay.status' | translate}}</th>
+              <th>
+                <div style="float: right;">
+                  <div style="margin-top: 7px" class="checkbox-nice checkbox-inline pull-right">
+                    <input type="checkbox" id="mail_status" class='checkbox style-2 pull-right' ng-model="checkAlls"
+                           ng-click="checkAll()"/>
+                    <label for="mail_status" class="pull-left"></label>
+                  </div>
+                  <div class="cb-view-container"><span
+                       style="word-spacing: -1px">{{'control.fence.allDays'|translate }}</span></div>
+                </div>
+              </th>
+            </tr>
+            </thead>
+            <tbody ng-repeat="payment in paymentHistorial" class="thin-border-row">
+            <tr style="border-top: none;">
+              <td style="border-top: none;">{{payment.deviceName}}</td>
+              <td style="border-top: none; text-align: center;">
+                <div style="text-align: left"><span
+                     style="font-weight: bold; font-size: .8em;">{{payment.creationDate}}</span></div>
+              </td>
+              <td style="border-top: none;">{{payment.amount}} {{'shopping.cart.currency' | translate}}</td>
+              <td style="border-top: none;">
+                <span ng-show="{{payment.status == 'PROCESSED'}}" class="badge badge-success ng-binding">{{'success'|translate}}</span>
+                <span ng-show="{{payment.status== 'ERROR'}}" class="badge badge-danger ng-binding">{{'failed'|translate}}</span>
+              </td>
+              <td style="border-top: none;">
+                <div style="margin-top: -13px; float: right;" class="checkbox-nice checkbox-inline">
+                  <input type="checkbox" id="payment_status_{{payment.id}}" ng-model="checkboxes[payment.id]"
+                         ng-change="changeCheckBox(payment.id)" class='checkbox style-2 pull-right'/>
+                  <label for="payment_status_{{payment.id}}" class="pull-left">
+                    <!--{{ 'lbl.thursday.abbr' | translate }}-->
+                  </label>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+          <button ng-class="{'pendingButton' : checkboxes.length == 0}" type="submit" title="{{'lbl.save'| translate}}"
+                  class="btn btn-primary pull-right" data-dismissible="false" ng-click="deleteRow()">
+            {{'state.account.payment.delete'| translate}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-include="'common/dialogs/subscription-dialog.html'"></div>

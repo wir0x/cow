@@ -1,0 +1,213 @@
+<!--New Account Modal-->
+<div class="modal fade" data-backdrop="static" data-keyboard="false" id="device-info" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" ng-click="closeAlertas()" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa {{device.icon}} " style="color:#{{device.color}}; "> </i>
+                    {{device.name}}
+                </h4>
+                <!--//<i class="fa '+ icon +' "  style="color:#'+color+';" ></i>-->
+            </div>
+
+            <div class="modal-body">
+                <form name="deviceForm" id="deviceForm-{{device.id}}" role="form">
+                    <div class="row">
+                        <div class="main-box-body clearfix" style="display:block; margin-top:0px; padding: 10px">
+                            <div class="row" style="overflow-x: inherit;">
+                                <!-- name -->
+                                <div class="form-group col-md-6">
+                                    <label for="name-{{device.id}}">
+                                        {{'configDevice.device.namePlaceholder'|translate}}
+                                    </label>
+                                    <input type="text" class="form-control"
+                                           id="name-{{device.id}}"
+                                           placeholder="{{'configDevice.device.namePlaceholder'|translate}}"
+                                           ng-model="device.name"
+                                           value="{{device.name}}"
+                                           required/>
+                                </div>
+                                <div style="float: right">
+                                    <!-- color -->
+                                    <div class="form-group col-md-3 col-xs-6" style="width: 50px">
+                                        <label for="color-{{device.id}}">{{'device.config.color.title'|translate}}</label>
+                                        <input type="text"
+                                               id="color-{{device.id}}"
+                                               name="border-color"
+                                               class="pick-a-color form-control"
+                                               color="device.color"
+                                               ng-model="device.color"
+                                               title="{{'device.config.color.title'|translate}}"
+                                               pick-color="{showSavedColors: false, showAdvanced: false, showHexInput: false, inlineDropdown: true}"/>
+                                    </div>
+                                    <!-- icon -->
+                                    <div class="form-group col-md-3 col-xs-6">
+                                        <label for="icon-{{device.id}}">{{'device.config.icon.title'|translate}}</label><br/>
+                                        <button style="height: 40px"
+                                                id="icon-{{device.id}}"
+                                                class="iconPicker btn btn-default "
+                                                title="{{'device.config.icon.title'|translate}}"
+                                                icon-picker="{iconset: 'fontawesome', icon: '{{device.icon}}', search: false}">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <a ng-if="device.sos || device.battery || device.hasDropAlarm" ng-click="showAlertas()" style="float: right; margin-bottom: -10px; font-size: .8em">{{'lbl.define.alerts' | translate}}</a>
+                        </div>
+                    </div>
+
+
+                    <!--ALERTAS SOS-->
+                    <div class="row" ng-show="bolShowAlertas">
+                        <!-- ALERT SOS -->
+                        <div class="main-box-body clearfix" ng-show="device.sos"
+                             style="display:block; margin-top:0px; padding: 10px">
+                            <!--ng-show="device.sos"-->
+                            <header class="main-box-header clearfix">
+                                <h4>{{'device.config.alert.sos.title'|translate}}</h4>
+                            </header>
+                            <div class="main-box-body clearfix">
+                                <!--alert to email-->
+                                <div class="form-group ">
+                                    <label for="emailAlerts-{{device.id}}">{{ 'alert.to.emails' | translate}}</label>
+                                    <textarea id="emailAlerts-{{device.id}}"
+                                              name="alertEmails"
+                                              ng-model="device.sosMails"
+                                              ng-pattern="/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+([,.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+)*$/"
+                                              ng-keypress="blockSpace($event)"
+                                              class="form-control"
+                                              placeholder="{{'emails.example'| translate }}"
+                                              rows="2">
+                                    </textarea>
+
+                                    <span class="help-block alert alert-warning" ng-show="deviceForm.alertEmails.$error.pattern">
+                                        <i class="fa fa-warning fa-fw fa-lg"></i><strong>{{'control.msg.valid.mail'|translate}}</strong>
+                                    </span>
+
+                                    <!--alert to cellphone-->
+
+                                    <label style="margin-top: 10px" for="smsAlerts-{{device.id}}">{{ 'alert.to.cellphones' | translate}}</label>
+                                    <textarea
+                                            id="smsAlerts-{{device.id}}"
+                                            name="alertPhoneNumbers"
+                                            ng-disabled="currentUser.companyTest"
+                                            ng-model="device.sosCellphones"
+                                            ng-pattern="/^(\d{8})+([,.](\d{8}))*$/"
+                                            placeholder="{{'phones.example'| translate }}"
+                                            class="form-control"
+                                            rows="2">
+                                    </textarea>
+
+                                    <span class="help-block alert alert-warning" ng-show="deviceForm.alertPhoneNumbers.$error.pattern">
+                                         <i class="fa fa-warning fa-fw fa-lg"></i>{{'control.message.valid.national.numbers'|translate}}<br>{{'control.msg.valid.phone.number.coma'|translate}}
+                                    </span>
+                                    <span class="help-block alert alert-warning" ng-show="currentUser.companyTest">
+                                        <i class="fa fa-warning fa-fw fa-lg"></i>
+                                        <strong>{{'lbl.warning'| translate }}</strong> {{'lbl.user.test.smsNotAllowed'| translate }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ALERT BATTERY-->
+                        <div class="main-box-body clearfix" ng-show="device.battery"
+                             style="display:block; margin-top:0px; padding: 10px">
+                            <!--ng-show="device.battery"-->
+                            <header class="main-box-header clearfix">
+                                <h4>{{'battery.alarm.notifications'|translate}}</h4>
+                            </header>
+                            <div class="main-box-body clearfix">
+                                <!--alert to Email-->
+                                <div class="form-group">
+                                    <label for="batteryMails-{{device.id}}">{{ 'alert.to.emails' | translate}}</label>
+                                    <textarea id="batteryMails-{{device.id}}"
+                                              name="batteryEmails"
+                                              ng-model="device.batteryMails"
+                                              class="form-control"
+                                              ng-pattern="/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+([,.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$/"
+                                              placeholder="{{'emails.example'| translate }}"
+                                              rows="2">
+                                    </textarea>
+                                    <span class="help-block alert alert-warning" ng-show="deviceForm.batteryEmails.$error.pattern">
+                                        <i class="fa fa-warning fa-fw fa-lg"></i><strong>{{'control.msg.valid.mail'|translate}}</strong>
+                                    </span>
+
+                                    <!--alert to cellphone-->
+                                    <label style="margin-top: 10px" for="batteryCellphones-{{device.id}}">{{ 'alert.to.cellphones' | translate}}</label>
+                                    <textarea id="batteryCellphones-{{device.id}}"
+                                              name="batteryPhoneNumbers"
+                                              ng-disabled="currentUser.companyTest"
+                                              ng-model="device.batteryCellphones"
+                                              placeholder="{{'phones.example'| translate }}"
+                                              ng-pattern="/^(\d{8})+([,.](\d{8}))*$/"
+                                              class="form-control"
+                                              rows="2">
+                                    </textarea>
+
+                                    <span class="help-block alert alert-warning" ng-show="deviceForm.batteryPhoneNumbers.$error.pattern">
+                                        <i class="fa fa-warning fa-fw fa-lg"></i>{{'control.message.valid.national.numbers'|translate}}<br> {{'control.msg.valid.phone.number.coma'|translate}}
+                                    </span>
+                                    <span class="help-block alert alert-warning" ng-show="currentUser.companyTest">
+                                        <i class="fa fa-warning fa-fw fa-lg"></i><strong>{{'lbl.warning'| translate }}</strong> {{'lbl.user.test.smsNotAllowed'| translate }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- DROP WATCH ALARM -->
+                        <div class="main-box-body clearfix" ng-show="device.hasDropAlarm" style="display:block; margin-top:0px; padding: 10px">
+                            <!--ng-show="device.battery"-->
+                            <header class="main-box-header clearfix">
+                                <h4>{{'drop.alarm.notifications' | translate}}</h4>
+                            </header>
+                            <div class="main-box-body clearfix">
+                                <!--alert to Email-->
+                                <div class="form-group">
+                                    <label for="emailsDropAlarm-{{device.id}}">{{ 'alert.to.emails' | translate}}</label>
+                                    <textarea id="emailsDropAlarm-{{device.id}}"
+                                              name="emailsDropAlarm"
+                                              ng-model="device.emailsDropAlarm"
+                                              class="form-control"
+                                              ng-pattern="/^(([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{1,5}){1,25})+([,.](([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5}){1,25})+)*$/"
+                                              placeholder="{{'emails.example'| translate }}"
+                                              rows="2">
+                                    </textarea>
+                                    <span class="help-block alert alert-warning" ng-show="deviceForm.emailsDropAlarm.$error.pattern">
+                                        <i class="fa fa-warning fa-fw fa-lg"></i>
+                                        <strong>{{'control.msg.valid.mail'|translate}}</strong>
+                                    </span>
+
+                                    <!--cellphone alarms-->
+                                    <label style="margin-top: 10px" for="cellphonesDropAlarm-{{device.id}}">{{ 'alert.to.cellphones' | translate}}</label>
+                                    <textarea id="cellphonesDropAlarm-{{device.id}}"
+                                              name="cellphonesDropAlarm"
+                                              ng-disabled="currentUser.companyTest"
+                                              ng-model="device.cellphonesDropAlarm"
+                                              placeholder="{{'phones.example'| translate }}"
+                                              ng-pattern="/^(\d{8})+([,.](\d{8}))*$/"
+                                              class="form-control"
+                                              rows="2">
+                                    </textarea>
+                                    <span class="help-block alert alert-warning" ng-show="deviceForm.cellphonesDropAlarm.$error.pattern">
+                                        <i class="fa fa-warning fa-fw fa-lg"></i>{{'control.message.valid.national.numbers'|translate}}<br>{{'control.msg.valid.phone.number.coma'|translate}}
+                                    </span>
+                                    <span class="help-block alert alert-warning" ng-show="currentUser.companyTest">
+                                        <i class="fa fa-warning fa-fw fa-lg"></i>
+                                        <strong>{{'lbl.warning'| translate }}</strong> {{'lbl.user.test.smsNotAllowed'| translate }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button title="{{'lbl.close' | translate}}" type="button" class="btn btn-sm btn-default" ng-click="closeAlertas()" data-dismiss="modal">{{'lbl.close' | translate}}</button>
+                <button title="{{'lbl.save' | translate}}" type="button" ng-disabled="deviceForm.$invalid" class="btn btn-sm btn-primary" ng-click="updateDevice()">{{'lbl.save' | translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>

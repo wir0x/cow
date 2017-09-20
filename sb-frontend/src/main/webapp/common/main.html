@@ -1,0 +1,29 @@
+<body>
+<div id="theme-wrapper">
+  <!--// nav bar -->
+  <div ng-include='"common/navigation.html"' ng-if="appConfig.headerVisible"></div>
+
+  <!--// main content -->
+  <div id="page-wrapper" class="container" ng-if="appConfig.headerVisible">
+    <div class="row">
+      <div id="content-wrapper">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="slide-main-container">
+              <div ng-view-fix>
+                <div ng-view autoscroll="true" class="slide-main-animation">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--// Footer -->
+        <div ng-include='"common/footer.html"' class="footer_bar" ng-if="appConfig.footerVisible"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div ng-view-fix ng-if="!appConfig.headerVisible">
+  <div ng-view autoscroll="false" class="slide-main-animation"></div>
+</div>
+</body>
